@@ -1,0 +1,383 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>gradle 入门 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="简单记录gradle入门使用的过程。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="gradle 入门"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>gradle 入门</h2>
+					
+					<div>
+						<span class="post-time">2016-11-13 16:33:23</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>简单记录gradle入门使用的过程。<br><a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在 <a href="http://www.gradle.org/downloads" target="_blank" rel="external">官网</a> 下载（仅需要 Gradle的二进制发布包）  </p>
+<p>解压，将解压目录中的bin目录添加到环境变量中  </p>
+<p>环境变量中添加GRADLE_USER_HOME， 指定GRADLE用户空间目录<br>如果使用maven，也需要在环境变量中添加M2_HOME ，指向maven的安装目录。  </p>
+<p>命令行运行gradle，安装成功则可以看到如下结果</p>
+<pre><code># gradle
+Starting a Gradle Daemon (subsequent builds will be faster)
+:help
+
+Welcome to Gradle 3.1.
+
+To run a build, run gradle &lt;task&gt; ...
+
+To see a list of available tasks, run gradle tasks
+
+To see a list of command-line options, run gradle --help
+
+To see more detail about a task, run gradle help --task &lt;task&gt;
+
+BUILD SUCCESSFUL
+
+Total time: 8.051 secs
+C:\Users\bin&gt;
+</code></pre><p>GRADLE_USER_HOME中已生成如下目录</p>
+<pre><code>|-- caches
+|-- daemon
+|-- native
+</code></pre><h2 id="配置java项目"><a href="#配置java项目" class="headerlink" title="配置java项目"></a>配置java项目</h2><p>创建目录结构</p>
+<pre><code>mkdir -p src/main/java/hello
+vim  src/main/java/hello/HelloWorld.java
+</code></pre><p>HelloWorld.java内容为</p>
+<pre><code>package hello;
+
+public class HelloWorld {
+   public static void main(String[] args) {
+           System.out.println(&quot;hello,gradle&quot;);
+    }
+}
+</code></pre><p>创建build.gradle，内容为</p>
+<pre><code>apply plugin: &#39;java&#39;
+</code></pre><p>此时项目目录结构为</p>
+<pre><code>|-- build.gradle
+|-- src
+    |-- main
+        |-- java
+            |-- hello
+                |-- HelloWorld.java
+</code></pre><p>运行gradle任务</p>
+<pre><code>gradle build
+</code></pre><p>该任务执行以下操作：编译、执行单元测试、组装Jar文件</p>
+<p>成功后可以看到输入<code>BUILD SUCCESSFUL</code></p>
+<p>此时当前目录生成build目录，其中关键子目录</p>
+<ul>
+<li>classes: 保存被编译后的.class文件</li>
+<li>reports: 构建报告（如：测试报告）</li>
+<li>lib: 组装好的项目包（通常为：.jar或者.war文件）</li>
+</ul>
+<h2 id="声明依赖"><a href="#声明依赖" class="headerlink" title="声明依赖"></a>声明依赖</h2><p>创建测试类</p>
+<pre><code>mkdir -p src/test/java/hello
+vim src/test/java/hello/HelloTest.java
+</code></pre><p>HelloTest内容为</p>
+<pre><code>package hello;
+
+import org.junit.Test;
+
+public class HelloTest {
+    @Test
+    public void test() {
+    System.out.println(&quot;hello,test&quot;);
+    }
+
+}
+</code></pre><p>引用了junit的类，所以需要申明依赖于junit，build.gradle中添加内容</p>
+<pre><code>repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile &quot;junit:junit:4.12&quot;
+}
+</code></pre><p>repositories定义告诉构建系统通过Maven中央库来检索项目依赖的软件包<br>dependencies则声明项目依赖  </p>
+<p>运行<code>gradle build</code>可以看到构建成功。</p>
+<p>需要注意的是，上述代码声明的依赖compile范围的，即这个库在编译和运行时都需要（如果构建WAR文件，这个依赖文件会包括在/WEB-INF/libs目录下），<br>另外值得注意的依赖类型包括：</p>
+<ul>
+<li>providedCompile：在编译期间需要这个依赖包，但在运行期间可能由容器提供相关组件（比如：Java Servlet API）</li>
+<li>testCompile：依赖项仅在构建和运行测试代码时需要，在项目运行时不需要这个依赖项。</li>
+</ul>
+<p>所以junit的声明应该为</p>
+<pre><code>dependencies {
+    testCompile(  
+        &quot;junit:junit:4.11&quot;  
+    ) 
+}
+</code></pre><h2 id="修改maven远程地址"><a href="#修改maven远程地址" class="headerlink" title="修改maven远程地址"></a>修改maven远程地址</h2><pre><code>repositories {
+    mavenLocal()
+    mavenCentral()
+}
+</code></pre><p>根据上述定义，Gradle会使用本地仓库，本地仓库路径使用maven配置路径，即M2_HOME/conf/settings.xml中localRepository指定目录，如果本地仓库不存在相关依赖，Gradle会创建maven远程仓库下载，默认地址为 <a href="https://repo1.maven.org/maven2/" target="_blank" rel="external">https://repo1.maven.org/maven2/</a> ，下载速度较慢，可以将下载地址修改为国内的Maven镜像仓库。<br>在GRADLE_USER_HOME/ 下添加文件init.gradle，内容如下：</p>
+<pre><code>allprojects{
+    repositories {
+        def REPOSITORY_URL = &#39;http://maven.aliyun.com/nexus/content/groups/public/&#39;
+        all { ArtifactRepository repo -&gt;
+            if(repo instanceof MavenArtifactRepository){
+                def url = repo.url.toString()
+                if (url.startsWith(&#39;https://repo1.maven.org/maven2&#39;) || url.startsWith(&#39;https://jcenter.bintray.com/&#39;)) {
+                    project.logger.lifecycle &quot;Repository ${repo.url} replaced by $REPOSITORY_URL.&quot;
+                    remove repo
+                }
+            }
+        }
+        maven {
+            url REPOSITORY_URL
+        }
+    }
+}
+</code></pre><p>init.gradle文件其实是Gradle的初始化脚本(Initialization Scripts)，也是运行时的全局配置。<br>上述代码将默认地址修改为阿里提供的maven仓库。</p>
+<p>运行<code>gradle build</code>可以看到如下输出</p>
+<pre><code>Starting a Gradle Daemon (subsequent builds will be faster)
+Repository https://repo1.maven.org/maven2/ replaced by http://maven.aliyun.com/nexus/content/groups/public/.
+Repository https://repo1.maven.org/maven2/ replaced by http://maven.aliyun.com/nexus/content/groups/public/.
+</code></pre><h2 id="Gradle-Wrappe"><a href="#Gradle-Wrappe" class="headerlink" title="Gradle Wrappe"></a>Gradle Wrappe</h2><p>Gradle Wrapper是开始一个Gradle构建的首选方式。它包含了windows批处理以及OS X和Linux的Shell脚本。这些脚本允许我们在没有安装Gradle的系统上执行Gradle构建。<br>build.gradle如下内容</p>
+<pre><code>task wrapper(type: Wrapper) {
+    gradleVersion = &#39;3.1&#39;
+}
+</code></pre><p>下载和初始化wrapper脚本，执行命令</p>
+<pre><code>gradle wrapper
+</code></pre><p><code>BUILD SUCCESSFUL</code>后，可以看到当前目录已生成了gradle，gradlew，gradlew.bat，当前目录概要为</p>
+<pre><code>|-- build
+|-- build.gradle
+|-- gradle
+|-- gradlew
+|-- gradlew.bat
+|-- src
+</code></pre><p>现在Gradle Wrapper已经可以用于构建系统了，在任何地方，都运行wrapper脚本来构建系统</p>
+<pre><code>./gradlew build
+</code></pre><p>当第一次通过wrapper使用指定版本的Gradle构建系统时，wrapper首先下载对应版本的Gradle可执行文件。<br>可以直接将下载好的对应版本的Gradle可执行文件放到GRADLE_USER_HOME/wrapper/dists下对应的目录。</p>
+<h2 id="多模块项目"><a href="#多模块项目" class="headerlink" title="多模块项目"></a>多模块项目</h2><p>创建一个新的目录，初始化</p>
+<pre><code>gradle init
+</code></pre><p>此时项目目录结构为</p>
+<pre><code>├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── settings.gradle
+</code></pre><p>创建两个子模块core和web，创建模块目录</p>
+<pre><code>mkdir -p core/src/main/java
+mkdir -p core/src/test/java
+mkdir -p web/src/main/java
+mkdir -p web/src/test/java
+</code></pre><p>修改settings.gradle 文件，引入子模块</p>
+<pre><code>include &#39;core&#39;,&#39;web&#39;
+</code></pre><p>修改build.gradle，内容为</p>
+<pre><code>apply plugin: &#39;java&#39;
+
+// 所有子模块的通用配置
+subprojects { 
+    apply plugin: &#39;java&#39;
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile(  
+            &quot;junit:junit:4.11&quot;  
+        ) 
+    }
+
+}
+
+// 子模块配置
+project(&#39;:core&#39;) {  
+    dependencies {
+        compile &quot;joda-time:joda-time:2.2&quot;
+    }
+}  
+
+
+project(&#39;:web&#39;) {  
+
+}
+</code></pre><p>子模块配置也可以写在子模块目录build.gradle下。</p>
+<p>参考<br><a href="http://www.importnew.com/15881.html" target="_blank" rel="external">使用Gradle构建Java项目</a><br><a href="https://yq.aliyun.com/articles/25589" target="_blank" rel="external">Gradle构建多模块项目 </a><br><a href="https://yrom.net/blog/2015/02/07/change-gradle-maven-repo-url/" target="_blank" rel="external">Gradle 修改 Maven 仓库地址</a></p>
+<p>更多文档<br><a href="http://pkaq.org/gradledoc/docs/userguide/userguide.html" target="_blank" rel="external">Gradle 用户手册</a></p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/gradle-basic.md" data-title="gradle 入门" data-url="https://binecy.coding.me/gradle-basic/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" ></div>
+		</div>
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,230 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>java 路径 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="总结了一下java中获取路径的一些方法。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="java 路径"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9 center-content">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>java 路径</h2>
+					
+					<div>
+						<span class="post-time">2016-10-10 22:30:02</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>总结了一下java中获取路径的一些方法。<br><a id="more"></a></p>
+<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>System.getProperty(“user.dir”) 可以获取java虚拟机调用目录，即当前用户目录。<br>JAVA IO操作中相对路径都是该路径。  </p>
+<pre><code>public class Path {
+    public static void main(String[] args) {
+        System.out.println(System.getProperty(&quot;user.dir&quot;));
+    }
+}
+</code></pre><p>如Path类位于<code>E:\java</code><br>运行Path类：</p>
+<pre><code>$ java Path
+E:\java
+</code></pre><p>可以看到输入Path类所在路径</p>
+<p>但在tomcat启动的web项目中，System.getProperty(“user.dir”)获取到的是<code>tomcat/bin</code>目录<br>在eclipse或idea等IDE中获取的结果也不样<br>使用相对目录的缺点是<strong>无法获取一致的路径</strong></p>
+<h3 id="classpath"><a href="#classpath" class="headerlink" title="classpath"></a>classpath</h3><p>默认情况下classpath即编译文件.class的输出路径。  </p>
+<h4 id="Class-getResource"><a href="#Class-getResource" class="headerlink" title="Class.getResource"></a>Class.getResource</h4><p>Class.getResource(“/“) 可以获取表示classpath的URL<br>Class.getResource(“”) 可以获取表示该类编译后class文件所在目录的URL</p>
+<pre><code>package com.study.path;
+
+import org.junit.Test;
+
+public class ClassPath {
+
+    @Test
+    public void testClassGetResource() {
+        System.out.println(this.getClass().getResource(&quot;&quot;).getPath());
+        System.out.println(this.getClass().getResource(&quot;/&quot;).getPath());
+    }
+}
+</code></pre><p>输出</p>
+<pre><code>/F:/maven_study/target/test-classes/com/study/path/     # ClassPath.class目录
+/F:/maven_study/target/test-classes/
+</code></pre><p><strong>URL使用了utf-8字符集对路径进行了编码，会对中文和空格进行转换，可以调用URLDecoder.decode方法进行解码获取原始路径。</strong></p>
+<pre><code>String classPath = java.net.URLDecoder.decode(classPath, &quot;utf-8&quot;);
+</code></pre><h4 id="ClassLoader-getResource"><a href="#ClassLoader-getResource" class="headerlink" title="ClassLoader.getResource"></a>ClassLoader.getResource</h4><p>ClassLoader.getResource(“”)  可以获取表示classpath的URL<br><strong>ClassLoader.getResource(“/“)返回null，参数不能以/开始</strong></p>
+<pre><code>@Test
+public void testClassLoaderGetResource() {
+    System.out.println(Thread.currentThread().getContextClassLoader().getResource(&quot;&quot;).getPath());
+}
+</code></pre><p>输出</p>
+<pre><code>/F:/maven_study/target/test-classes/
+</code></pre><p><em>建议使用ClassLoader.getResource</em></p>
+<p>参考:<br><a href="http://blog.csdn.net/magi1201/article/details/18731581" target="_blank" rel="external">java代码中获取classpath路径 </a></p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/java-path.md" data-title="java 路径" data-url="https://binecy.coding.me/java-path/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

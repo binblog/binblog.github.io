@@ -1,0 +1,258 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一句话设计模式 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="简单记录个人对设计模式理解，错漏之处，还望指出">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="一句话设计模式"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>一句话设计模式</h2>
+					
+					<div>
+						<span class="post-time">2016-11-06 17:18:06</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>简单记录个人对设计模式理解，错漏之处，还望指出<br><a id="more"></a></p>
+<h2 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h2><h3 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h3><p>客户不需要创建对象实例，由一个工厂类创建的具体产品类</p>
+<pre><code>class  Factory {
+    public static Component getComponent(int type) {    // type由客户指定或从配置中读取
+        ...
+    }
+}
+</code></pre><h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>在工厂类中增加一个抽象工厂定义，产品类的实例化过程延迟到工厂子类完成（允许系统在不修改具体工厂角色的情况下引进新的产品）    </p>
+<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p>使用一个工厂等级结构创建出属于不同产品等级结构的一个产品族中的所有对象<br>切换产品族的时候，只要提供不同的抽象工厂实现就可以<br>系统可以根据构件依赖定制抽象工厂，也可以由客户定制抽象工厂，提供给系统使用。<br>缺点：如果给整个产品族添加一个新的产品，那么就需要修改抽象工厂类，这样就会导致必须修改所有的工厂实现类。<br><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/1.png" alt="image"><br><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/2.png" alt="image"></p>
+<h3 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h3><p>确保构件只有一个实例，并且构件需要向整个系统提供这个实例。</p>
+<h3 id="创建者"><a href="#创建者" class="headerlink" title="创建者"></a>创建者</h3><p>构件使用创建者实现构件实例化的细节。<br>如果对象构造方法参数过多，可以使用内部创建者构造对象。  </p>
+<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><p>通过复制这个原型对象的办法创建出更多同类型的对象<br>如果对象需要深度复制，可以实现clone方法  </p>
+<h2 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h2><h3 id="适配器"><a href="#适配器" class="headerlink" title="适配器"></a>适配器</h3><p>常用于转化api  </p>
+<h3 id="桥梁"><a href="#桥梁" class="headerlink" title="桥梁"></a>桥梁</h3><p>…</p>
+<h3 id="合成（组合）"><a href="#合成（组合）" class="headerlink" title="合成（组合）"></a>合成（组合）</h3><p>对于树结构关系的对象，将个体对象（叶子结点）和容器对象（非叶子结果）作同样处理（实现相同的接口），让客户可以将他们一致对待。<br>典型：把目录和文件当做同一种对象对待和处理  </p>
+<h3 id="装饰"><a href="#装饰" class="headerlink" title="装饰"></a>装饰</h3><p>装饰者继承构件，和构件提供一样的接口，但装饰会添加额外的逻辑<br>可以将aop中的代理类视为装饰者<br>典型：Java I/O标准库的设计<br><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/3.png" alt="image"></p>
+<h3 id="外观（门面）"><a href="#外观（门面）" class="headerlink" title="外观（门面）"></a>外观（门面）</h3><p>外部与一个子系统的通信必须通过一个统一的门面对象进行。门面模式提供一个高层次的接口，使得子系统更易于使用，也减少外部系统与的耦合。</p>
+<p><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/4.png" alt="image"></p>
+<h3 id="享元"><a href="#享元" class="headerlink" title="享元"></a>享元</h3><p>以共享的方式高效地支持大量的细粒度对象<br><img src="http://ofbrwsjmr.bkt.clouddn.com/555.png" alt="image"><br>简单工厂FlyweightFactory负责创建和管理享元角色，他必须保证享元对象可以被系统适当地共享。<br>典型：string<br>享元是对象级别的, 即多处使用到相同内容对象的地方只需要使用同一个对象即可, 而单例是类级别的, 即这个类必须只能实例化出来一个对象。</p>
+<p>代理模式：构件提供一个代理对象，并由代理对象控制对的引用。<br>在某些情况下，客户不想或者不能够直接引用构件，而代理对象可以在客户端和客户之间起到中介的作用。<br><img src="http://ofbrwsjmr.bkt.clouddn.com/666.png" alt="image"></p>
+<h2 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h2><h3 id="责任链"><a href="#责任链" class="headerlink" title="责任链"></a>责任链</h3><p>每个链节对象都持有下一链节的引用从而连接起来形成一条责任链。请求在这个链上传递， 每个链节处理完后将请求传递给下一个链节。<br>客户并不知道具体哪一链节处理了这个请求，所以系统可以在不影响客户的情况下动态地重新组织和分配责任。<br>客户也可以根据需要自行组合责任链。<br>典型：Tomcat中的Filter，netty的ChannelHandler</p>
+<h3 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h3><p>抽象类定义一系列抽象方法（这些方法会被系统逻辑所调用），这些方法（钩子方法）由客户具体实现。客户可以以不同的方式实现这些抽象方法，从而实现自己的逻辑。<br>典型：HttpService类中的service()方法会调用doPost/doPut/doDelete/doGet等方法，而这些do…方法则客户自行实现。</p>
+<h3 id="解释器"><a href="#解释器" class="headerlink" title="解释器"></a>解释器</h3><p>给定一个语言之后，解释器模式可以定义出其文法的一种表示，并同时提供一个解释器。客户端可以使用这个解释器来解释这个语言中的句子。  </p>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><p>将一个请求或者操作封装到对象中。命令模式使请求方与执行方解耦，系统可以轻松实现命令队列，命令日志化，撤销和恢复，复合命令或扩展新的命令</p>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>客户可以通过迭代器顺序地访问一个聚集中的元素而不必暴露聚集的内部元素。<br>遍历算法被封装在迭代器中，迭代的算法可以独立于聚集角色变化，聚集角色也可以实现多个迭代器<br>方法1：由聚集对象实现迭代方法next，如java.sql.ResultSet</p>
+<pre><code>ResultSet rs;
+while(rs.next()) {
+    Object o = rs.getObject(i);
+}
+</code></pre><p>方法2：由聚集对象创建的iterator实现迭代方法next，如果java.util.List</p>
+<pre><code>List&lt;String&gt; list ;
+Iterator&lt;String&gt; iterator = list.iterator();
+while (iterator.hasNext()) {
+    String s = iterator.next();
+}
+</code></pre><h3 id="中介者"><a href="#中介者" class="headerlink" title="中介者"></a>中介者</h3><p>增加一个中介者对象，构件间的相互调用需要通过中介者调度。当构件间相互作用发生改变时，不会立即影响到其他构件之间的相互作用。从而保证这些相互作用可以彼此独立地变化。<br>构件间解耦，中介者集中控制交互，多对多关系变成一对多关系<br>缺点：<br>调停者过于复杂</p>
+<p><img src="http://ofbrwsjmr.bkt.clouddn.com/777.jpg" alt="image"></p>
+<h3 id="备忘录"><a href="#备忘录" class="headerlink" title="备忘录"></a>备忘录</h3><p>备忘录对象是一个用来存储另外一个对象内部状态的快照的对象。备忘录模式的用意是在不破坏封装的条件下，将一个对象的状态捕捉(Capture)住，并外部化，存储起来，从而可以在将来合适的时候把这个对象还原到存储起来的状态。  </p>
+<h3 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h3><p>将构件的行为包装在不同的状态对象里，每一个状态对象都属于一个抽象状态类的一个子类。状态模式的意图是让一个对象在其内部状态改变的时候，其行为也随之改变。<br>状态模式可以帮助避免if-else子句或者switch-case条件判定逻辑。<br><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/8.png" alt="image"></p>
+<h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><p>针对一组算法，将每一种算法封装到具有共同接口的独立的类中，从而使得它们可以相互替换。策略模式使得算法可以在不影响到客户端的情况下发生变化。<br>策略模式的特点就是各个策略算法的平等性。对于一系列具体的策略算法，大家的地位是完全一样的，所以实现算法之间可以相互替换。所有的策略算法在实现上也是相互独立的，相互之间是没有依赖的。</p>
+<p><strong>状态模式与策略模式区别</strong><br>状态模式根据不同的状态来决定具体行为，一种状态下只能有一种行为<br><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/9.png" alt=""></p>
+<p>策略模式强调的是平等性与可替换性，所有策略是同一行为的不同实现，客户根据需要选择一种策略<br><img src="http://ofbrwsjmr.bkt.clouddn.com/design_patterns/10.png" alt=""></p>
+<h3 id="访问者"><a href="#访问者" class="headerlink" title="访问者"></a>访问者</h3><pre><code>// 访问者
+interface Visitor {
+    void visit(Component c);    // 接收构件作为参数并作具体处理
+}
+
+// 构件
+public Class Component {
+    public int accept(Visitor visitor) {    // 接收访问者作为参数，并调用visit方法
+        visitor.visit(this);    // 将自身传递给访问者
+    }
+}
+</code></pre><p>事件回调也可以视为一种访问者模式</p>
+<pre><code>button.setOnClickListener(new Button.OnClickListener() {    // 访问者Button.OnClickListener
+    public void onClick(View v) {   // 将构件View传递给访问者
+        ...
+    }
+});
+</code></pre><h3 id="观察者（发布-订阅）"><a href="#观察者（发布-订阅）" class="headerlink" title="观察者（发布-订阅）"></a>观察者（发布-订阅）</h3><p>让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够做相应处理。</p>
+<p>推模型:主题对象向观察者推送主题的详细信息，不管观察者是否需要，推送的信息通常是主题对象的全部或大部分数据。</p>
+<p>拉模型:主题对象在通知观察者的时候，只传递少量信息。如果观察者需要更具体的信息，由观察者主动到主题对象中获取。<br>java.util.Observable类/Observer接口，提供了对观察者模式的支持。</p>
+<p>观察者模式类似访问者模式的加强，支持一系列的观察者，构件更新时通知所有的观察者，并实现添加/移除观察者的操作。</p>
+<p>参考：<br><a href="http://www.cnblogs.com/java-my-life/" target="_blank" rel="external">java_my_life</a><br><a href="http://it.deepinmind.com/designpattern/2014/03/10/DP-in-JDK.html" target="_blank" rel="external">细数JDK里的设计模式</a></p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/design-mode.md" data-title="一句话设计模式" data-url="https://binecy.coding.me/design-mode/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" ></div>
+		</div>
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

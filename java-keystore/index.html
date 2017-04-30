@@ -1,0 +1,282 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>java keystore知识简记 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="本文简单记录keystore里的定义及java中如何加载keystore。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="java keystore知识简记"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9 center-content">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>java keystore知识简记</h2>
+					
+					<div>
+						<span class="post-time">2016-12-20 08:23:04</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>本文简单记录keystore里的定义及java中如何加载keystore。<br><a id="more"></a></p>
+<p>密钥库是存储加密密钥和证书的存储设备。 它们最常用于SSL通信，用来证明服务器和客户端的身份。 三种条目可以存储在密钥库中。</p>
+<p>PrivateKey：用于非对称加密的密钥条目。因为它很敏感，所以常用密码保护，它也常用于加密数字签名<br>Certificate ：证书，证书中常包含公钥。它通常用于验证服务器的身份。<br>SecretKey：用于对称加密的密钥条目。</p>
+<p>Java中有几种不同类型的密钥库：JKS，JCEKS，PKCS12，PKCS11和DKS。 您可以在Oracle的Java Cryptography Architecture描述中找到这些密钥库的介绍。</p>
+<p>KeyStore 是java定义的密钥库，可以存储PrivateKey和Certificate，但不能存储SecretKey。KeyStore可以使用KeyStore Explorer 查看。</p>
+<p>可以使用keytool工具生成了server.keystore:</p>
+<pre><code>&gt;keytool -genkey -alias server  -keyalg RSA  -keystore server.keystore
+输入密钥库口令:
+再次输入新口令:
+您的名字与姓氏是什么?
+  [Unknown] :   a
+您的组织单位名称是什么?
+  [Unknown] :  a
+您的组织名称是什么?
+  [Unknown] :  a
+您所在的城市或区域名称是什么?
+  [Unknown] :  a
+您所在的省/市/自治区名称是什么?
+  [Unknown] :  a
+该单位的双字母国家/地区代码是什么?
+  [Unknown] :  a
+CN=a, OU=a, O=a, L=a, ST=a, C=a是否正确?
+  [否]:  y
+
+输入 &lt;server&gt; 的密钥口令
+        (如果和密钥库口令相同, 按回车):
+再次输入新口令:
+</code></pre><p>命令执行完后，当前目录会生成server.keystore， server.keystore中包含了PrivateKey和Certificate。<br><strong>上面输入了密钥库口令和密钥口令，密钥库口令用于打开密钥库，而密钥口令用于在java中加载PrivateKey</strong><br>alias用于区分密钥库的不同条目。</p>
+<p>如果客户需要我们的证书，那我们可以从server.keystore导出cer类型的证书：</p>
+<pre><code>&gt;keytool -export -file server.cer -alias server -keystore server.keystore
+输入密钥库口令:
+存储在文件 &lt;server.cer&gt; 中的证书
+</code></pre><p>执行上述命令，可以看到当前目录已经导出了server.cer</p>
+<p>如果我们获取得了客户的证书，并信任客户证书，就可以将客户证书导入到server.keystore中。</p>
+<pre><code>&gt;keytool -import -keystore server.keystore -file client.cer -alias  client
+输入密钥库口令:
+所有者: CN=b, OU=b, O=b, L=b, ST=b, C=b
+发布者: CN=b, OU=b, O=b, L=b, ST=b, C=b
+序列号: 49b9bb52
+有效期开始日期: Wed Dec 14 14:12:26 GMT+08:00 2016, 截止日期: Tue Mar 14 14:12:2
+6 GMT+08:00 2017
+证书指纹:
+         MD5: 00:A4:8E:2B:EA:2A:61:18:0A:D1:0F:2F:AB:99:E8:25
+         SHA1: 1B:F4:46:73:21:27:95:CE:2A:07:B8:16:52:A5:78:09:B3:84:EC:D4
+         SHA256: E7:1B:D0:D4:35:9A:7C:58:11:F5:25:C6:D7:F3:E7:96:93:C4:45:AF:49:
+12:9E:A5:B7:3E:F1:84:9D:CA:D1:EB
+         签名算法名称: SHA256withRSA
+         版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 87 9C 8D 23 16 AA 95 87   D9 12 F1 89 B7 71 E1 84  ...#.........q..
+0010: 93 5B 37 CE                                        .[7.
+]
+]
+</code></pre><p>使用KeyStore Explorer 打开server.keystore<br><img src="java-keystore/1.png" alt=""><br>可以看到当前密钥库中存在两个条目，一个是client的证书，另一个是server的密钥对，可以使用密钥对导出证书。</p>
+<p>java中定义了java.security.KeyStore，javax.net.ssl.KeyManagerFactory，javax.net.ssl.TrustManagerFactory这几个类来处理KeyStore，PrivateKey，Certificate。</p>
+<p>在java程序中<code>trustManagerFactory.init(null);</code>加载证时，java会按如下顺序查找keystore  </p>
+<ol>
+<li>如果定义了system property:javax.net.ssl.trustStore,则加载该属性指定文件。<br>如果还定义了javax.net.ssl.trustStore属性，则其值将用于打开信任库之前检查其中的数据的完整性。  </li>
+<li>如果<java-home>/lib/security/jssecacerts存在，则使用该文件。  </java-home></li>
+<li>如果<java-home>/lib/security/cacerts 存在，则使用该文件。  </java-home></li>
+</ol>
+<p>也可以通过如下代码自行加载keystore：</p>
+<pre><code>public static SSLContext loadSSLContext(String jksPath, String publicPassword, String privatePassword)
+            throws Exception {
+        // 加载KeyStore
+        InputStream in = new FileInputStream(jksPath);
+        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+        ks.load(in, publicPassword.toCharArray());    // 密钥库口令
+        in.close();
+
+        // 加载密钥
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        kmf.init(ks, privatePassword.toCharArray());    // 密钥口令
+
+        // 加载信任证书
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory
+                .getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(ks);
+
+
+        // 加载SSLContext
+        SSLContext sslContext = null;
+        sslContext = SSLContext.getInstance(&quot;TLSv1&quot;);   //TLSv1为目前常用协议
+        sslContext.init(kmf.getKeyManagers(), trustManagerFactory.getTrustManagers(), new java.security.SecureRandom());
+        return sslContext;
+    }
+</code></pre><p>参考：<br><a href="http://www.aneasystone.com/archives/2016/04/java-and-https.html" target="_blank" rel="external">Java 和 HTTP 的那些事（四） HTTPS 和 证书</a><br><a href="http://www.pixelstech.net/article/1408345768-Different-types-of-keystore-in-Java----Overview" target="_blank" rel="external">Different types of keystore in Java</a></p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/java-keystore.md" data-title="java keystore知识简记" data-url="https://binecy.coding.me/java-keystore/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

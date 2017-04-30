@@ -1,0 +1,273 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>effective java - 异常 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="《Effective Java》读书笔记，关于异常系列。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="effective java - 异常"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>effective java - 异常</h2>
+					
+					<div>
+						<span class="post-time">2016-10-07 23:43:12</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p><a href="https://book.douban.com/subject/3360807/" target="_blank" rel="external">《Effective Java》</a>读书笔记，关于异常系列。<br><a id="more"></a></p>
+<h2 id="只针对异常的情况才使用异常"><a href="#只针对异常的情况才使用异常" class="headerlink" title="只针对异常的情况才使用异常"></a>只针对异常的情况才使用异常</h2><p><strong>异常应该只用于异常情况，不应该用于正常的控制流</strong></p>
+<p>设计良好的api不应该强迫客户端为了正常控制流而使用异常。如果类有在特定状态下才可以调用的方法，就应该有对应的“状态检查”方法，如Iterator的next方法和hasNext方法。<br>或方法返回标识结束的值，如null，-1<br><!--more--></p>
+<h2 id="对可恢复的情况使用受检异常，对编程错误使用运行时异常"><a href="#对可恢复的情况使用受检异常，对编程错误使用运行时异常" class="headerlink" title="对可恢复的情况使用受检异常，对编程错误使用运行时异常"></a>对可恢复的情况使用受检异常，对编程错误使用运行时异常</h2><p><strong>如果期望调用者能够适当地恢复，应该使用受检异常。</strong> 通过抛出受检异常，强迫调用者在一个catch子句中处理该异常，或者将它传播出去。<br><em>用户可以根据错误信息进行处理</em><br>受检异常往往要指明可恢复的条件</p>
+<p><strong>用运行时异常表明编程错误</strong>  大多数运行时异常都表示客户没有遵守api规范中的约定，如ArrayIndexOutBoundsException。</p>
+<h2 id="避免不必要地使用受检异常"><a href="#避免不必要地使用受检异常" class="headerlink" title="避免不必要地使用受检异常"></a>避免不必要地使用受检异常</h2><p>受检异常会增加异常处理的工作量，也会增加代码复杂度。<br><strong>对于底层接口的方法或经常被调用的方法，如果声明抛出受检异常，可能会造成受检异常的大量蔓延，因为所有实现或调用这些方法的代码都必须处理受检异常。</strong>  </p>
+<p><strong>使用受检异常时，要考虑到异常捕获者能否立即采取有用的措施，如果不能，那考虑是否使用未受检异常更合适。</strong>  </p>
+<p>对于可能失败的方法，可以考虑添加“状态检查”方法并使用未受检异常。<br>捕获到的受检异常也可以根据情况转译为未受检异常</p>
+<h2 id="优先使用标准异常"><a href="#优先使用标准异常" class="headerlink" title="优先使用标准异常"></a>优先使用标准异常</h2><p>1.使api易于学习和使用<br>2.可读性更好，不会出现程序员不熟悉的异常。<br>3.异常类越少，内存印迹就越小，装载这些类的时间开销就越少。</p>
+<p>最常用的可重用异常：</p>
+<table>
+<thead>
+<tr>
+<th>异常</th>
+<th>使用场合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IllegalArgumentException</td>
+<td>非null的参数值不正确</td>
+</tr>
+<tr>
+<td>IllegalStateException</td>
+<td>对于方法调用而言，对象状态不合适</td>
+</tr>
+<tr>
+<td>NullPointerException</td>
+<td>在禁止使用null的情况下参数值为null</td>
+</tr>
+<tr>
+<td>IndexOutOfBoundsException</td>
+<td>下标参数越界</td>
+</tr>
+<tr>
+<td>ConcurrentModificationException</td>
+<td>在禁止并发修改的情况下，检测到对象的并发修改。</td>
+</tr>
+<tr>
+<td>ConcurrentModificationException</td>
+<td>对象不支持用户请求的方法</td>
+</tr>
+</tbody>
+</table>
+<h2 id="抛出与抽象层面相对应的异常"><a href="#抛出与抽象层面相对应的异常" class="headerlink" title="抛出与抽象层面相对应的异常"></a>抛出与抽象层面相对应的异常</h2><p>如果方法抛出的异常与它所执行的任务没有明显联系(如底层细节方法抛出的异常)，往往使人困惑，实现细节也会污染高层api。为了避免这个问题<strong>更高层的实现应该捕获底层的异常，同时抛出可以按照高层抽象进行解释的异常</strong>这种做法称为<em>异常转译</em><br>使用异常链<br>可以在给底层传递参数前，检查参数的有效性，从而避免底层方法抛出异常。</p>
+<h2 id="每个方法抛出的异常都要有文档"><a href="#每个方法抛出的异常都要有文档" class="headerlink" title="每个方法抛出的异常都要有文档"></a>每个方法抛出的异常都要有文档</h2><p><strong>始终要单独声明受检异常，并用利用javadoc的<code>@throws</code>标记，准确地记录下抛出每个异常的条件</strong><br><em>如果一个方法可能抛出多个异常，不要只声明它会抛出的这些异常的某个超类，即永远不要声明方法<code>throws Exception</code>或<code>throws Throwable</code></em></p>
+<p><strong>使用javadoc的<code>@throws</code>标签记录下一个方法可能抛出的每个未受检异常，但不要使用<code>throws</code>关键字将未受检异常包含在方法声明中。</strong></p>
+<h2 id="在异常的细节消息中包含失败的信息"><a href="#在异常的细节消息中包含失败的信息" class="headerlink" title="在异常的细节消息中包含失败的信息"></a>在异常的细节消息中包含失败的信息</h2><p><strong>为了捕获失败，异常的细节信息应该包含所有“对该异常有用的”的参数和域的值</strong>如IndexOutOfBoundsException异常的细节消息应该包含下界，上界和越界的下标值。<br>但异常消息中包含大量的描述信息往往没有作用。异常的细节消息与“用户层次的错误信息”不同，后者对于最终用户必须是可理解的，但异常的消息细节是让程序员用于分析错误的，信息的内容比可理解性要重要很多。<br>可以在异常中使用属性保存关键消息，再生成对应的消息描述，而不是直接使用字符串：</p>
+<h2 id="努力使失败保持原子性"><a href="#努力使失败保持原子性" class="headerlink" title="努力使失败保持原子性"></a>努力使失败保持原子性</h2><p><strong>对于会修改对象状态的方法，如果调用失败了，应该使对象保持在被调用之前的状态</strong></p>
+<ul>
+<li>使用不可变类，如果一个操作失败了，阻止创建新的对象  </li>
+<li>执行操作前先检查参数的有效性，对无效参数先抛出适合的异常</li>
+<li>调整计算处理的顺序，使得任何可能会失败的计算部分都在对象状态被修改之前发生。 这是对上一个方法的扩展  </li>
+<li>编写恢复代码（使用较少）</li>
+<li>在对象的一份临时拷贝上操作，成功后再拷贝内容替换对象内容。</li>
+</ul>
+<h2 id="不要忽略异常"><a href="#不要忽略异常" class="headerlink" title="不要忽略异常"></a>不要忽略异常</h2><p><strong>这里有三个重要的原则</strong></p>
+<ul>
+<li>具体明确<br>不要使用Throwable，Error，Exception或RuntimeException，使用具体的异常子类，如FileNotFoundException，EOFException和ObjectStreamException这些子 类，分别描述了一类特定的I/O错误：文件丢失,异常文件结尾和错误的序列化对象流</li>
+<li><p>提早抛出<br>如在方法开始时检查参数有效性，而不是将错误参数进行处理，再处理过程再抛出异常。<br><em>通过提早抛出异常（又称＂迅速失败＂），异常得以清晰又准确。堆栈信息立即反映出什么出了错（非法参数值），为什么出错（文件名不能为空值），以及哪里出的错（readPreferences()的前部分）。</em></p>
+</li>
+<li><p>延迟捕获</p>
+<pre><code>public void readPreferences(String filename){
+  InputStream in = null;
+
+  // DO NOT DO THIS!!!
+  try{
+      in = new FileInputStream(filename);
+  }
+  catch (FileNotFoundException e){
+      logger.log(e);
+  }
+
+  in.read(...);
+  //...
+}
+</code></pre></li>
+</ul>
+<p>如果出现FileNotFoundException异常，当我们查看日志时，会本能地查看日志最后的异常信息，却看到异常信息为代码 <code>in.read(...);</code> 抛出的NullPointerException异常，这里会造成非常大的误导。<br><strong>在合适的层面捕获异常，以便你的程序要么可以从异常中有意义地恢复并继续下去，而不导致更 深入的错误；要么能够为用户提供明确的信息，包括引导他们从错误中恢复过来。如果你的方法无法胜任，那么就不要处理异常，把它留到后面捕获和在恰当的层面处理(可能要转译)。</strong><br>参考<br><a href="http://www.importnew.com/1701.html" target="_blank" rel="external">有效处理Java异常三原则</a></p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/effective-java-exception.md" data-title="effective java - 异常" data-url="https://binecy.coding.me/effective-java-exception/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" ></div>
+		</div>
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,208 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>2017面试总结 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="不到两年的工作经验，面试了一个多月，也找到工作了，记录一下面试遇到的题目及遇到的坑吧。问题有点杂，很多是根据简历问的
+nio为什么比bio好  面向buffer，非阻塞synchronized与reentrantlock区别synchronized静态方法和synchronized实例方法的区别At">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="2017面试总结"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9 center-content">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>2017面试总结</h2>
+					
+					<div>
+						<span class="post-time">2017-04-29 15:49:55</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>不到两年的工作经验，面试了一个多月，也找到工作了，记录一下面试遇到的题目及遇到的坑吧。<br>问题有点杂，很多是根据简历问的</p>
+<p>nio为什么比bio好  面向buffer，非阻塞<br>synchronized与reentrantlock区别<br>synchronized静态方法和synchronized实例方法的区别<br>AtomicInteger与Interger区别<br>nio基于系统的什么机制？ epoll 多路复用<br>threadlocal实现<br>class类加载过程<br>线程池的实现<br>线程join的作用/一个任务等其他任务执行完后再执行,怎么处理<br>java对象的生命周期（在哪里创建/什么时候回收/什么时候进入老年区）<br>新生区什么时候触发回收？老年区呢？</p>
+<p>redis实现乐观锁，分布式锁<br>redis怎么做消息系统<br>跳表是什么结构？redis用在哪里<br>redis持久化的方式？aof如果超出文件限制了，怎么处理<br>redis有几种数据格式    </p>
+<p>简述一下https<br>http，tcp区别  tcp全双工，属于传输层 http请求响应，属于内容层<br>tcp，http特点</p>
+<p>mysql中for update是行锁还是表锁？ 列锁<br>简述一下mysql的乐观锁  mvcc<br>like可以使用索引吗<br>分表分库的路由算法<br>mysql Isam和Innodb引擎有什么区别<br>mysql 左外连接、右外连接、内连接、全连接区别<br>mysql事务隔离级别<br>mysql中!=可以使用索引吗？这样优化，使之可以使用索引<br>mysql 分表分库怎样做关联和事务</p>
+<p>spring有几种注入方式<br>spring中aop，ioc的实现原理<br>mybatis中${}和#{}区别<br>组合mybatis中的typehandler，说说组合模式，组合(dom4j)加载xml节点，说说访问者模式<br>netty中handler是单例吗</p>
+<p>thrift集群，怎么做负载均衡    nginx<br>thrfit怎样解决不断重连问题   长连接<br>thrif怎样向后兼容<br>rpc(dubbo)的调用过程<br>dubbo的实现（有什么组件，一次请求的过程）<br>dubbo有什么协议<br>spring cloud有哪些组件?有什么作用</p>
+<p>zk注册中心的作用<br>zookeeper的用途</p>
+<p>简述一下kafka<br>kafka 怎么按时间查询<br>kafka基于磁盘， 为什么吞吐量这么高<br>kafka中topic是什么</p>
+<p>怎样查看linux中进程/线程占用资源的情况    top -h<br>awk使用</p>
+<p>docker有那些网络模式/docker虚拟网络有什么缺点<br>了解哪些跨域攻击</p>
+<p><strong>一些场景题</strong><br>分布式session怎么实现<br>用户操作日记，一天1000W记录，需要按时间或用户进行搜索，用mysql存储有什么问题，使用其他什么组件更好<br>cpu过高，应用反应过慢，怎么排查<br>5千万排行榜，实时刷新，怎么实现<br>怎样测试tcp长连接并发数<br>设计一个抢购活动，要注意哪些问题</p>
+<p><strong>非技术问题</strong><br>个人目标/职业规划<br>工作中遇到问题，解决方案<br>对加班怎么看<br>为什么从上家公司离职</p>
+<p><strong>一些想法</strong><br>关于裸辞<br>裸辞会导致压力增大，面试谈薪资等方面也不利，慎行之。</p>
+<p>这次找工作经历两个阶段。一阶段是自己没准备好，技能知识或面试技巧没准备好，建议面试前多看看面经（学习理解而不是背），对于一些经常问的非技术问题，心里先确定自己的想法。二阶段是自己投错了公司，不同行业（或公司）对技术要求是不同的，特别是一些行业对技术是不太重视的，就算是海投，也要选择合适自己的职位，不然就是浪费时间。</p>
+<p>参考：<br><a href="http://www.importnew.com/12773.html" target="_blank" rel="external">Java线程面试题 Top 50</a><br><a href="http://www.jianshu.com/p/f5dee1306d0d" target="_blank" rel="external">年底啦，java后台面试题整理</a><br><a href="http://www.jianshu.com/p/1b2f63a45476" target="_blank" rel="external">关于Java面试，你应该准备这些知识点</a><br><a href="https://segmentfault.com/a/1190000004716061" target="_blank" rel="external">近期Java高级工程师面试总结</a><br><a href="https://yq.aliyun.com/articles/38181" target="_blank" rel="external">数据库和MySQL相关面试题目</a><br><a href="http://www.jianshu.com/p/1bc003884232" target="_blank" rel="external">java服务器后台面试题整理</a><br><a href="http://jeffzzf.github.io/2015/07/04/Java%E5%B9%B6%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86/" target="_blank" rel="external">Java并发面试题整理</a><br><a href="http://www.3023.com/6316/391446829072641.html" target="_blank" rel="external">你掌握以下50道题目，我包你进BAT任何一家公司</a></p>
+<p><a href="http://www.cnblogs.com/xrq730/p/5260294.html#3650335" target="_blank" rel="external">面试感悟—-一名3年工作经验的程序员应该具备的技能</a><br><a href="http://www.importnew.com/22056.html" target="_blank" rel="external">阿里面试回来，想和Java程序员谈一谈</a></p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/interview-summary.md" data-title="2017面试总结" data-url="https://binecy.coding.me/interview-summary/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

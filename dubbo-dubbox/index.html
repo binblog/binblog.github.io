@@ -1,0 +1,408 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>dubbo与dubbox入门 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="记录一下dobbu及dubbox的入门过程及一些简单的栗子">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="dubbo与dubbox入门"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>dubbo与dubbox入门</h2>
+					
+					<div>
+						<span class="post-time">2016-11-06 17:32:23</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>记录一下dobbu及dubbox的入门过程及一些简单的栗子<br><a id="more"></a></p>
+<h2 id="dubbo-service"><a href="#dubbo-service" class="headerlink" title="dubbo service"></a>dubbo service</h2><p>pom中添加依赖</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+    &lt;version&gt;2.5.6&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><p>定义服务接口和服务类</p>
+<pre><code>package com.study.service;
+
+public interface HelloService {
+    public String hello(String user) ;
+}
+
+
+package com.study.service.impl;
+
+import com.study.service.HelloService;
+
+public class HelloServiceImpl implements HelloService {
+    public String hello(String user) {
+        System.out.println(&quot; user : &quot; + user + &quot; say hello !&quot;);
+        return &quot;hello ! &quot; + user;
+    }
+}
+</code></pre><p>在目录resources/META-INF/spring下添加application.xml<br>（该目录不可任意修改，dubbo默认会读取该目录所有配置文件），文件内容如下</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:dubbo=&quot;http://code.alibabatech.com/schema/dubbo&quot;  
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans    
+       http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;!-- 提供方应用信息，用于计算依赖关系 --&gt;
+    &lt;dubbo:application name=&quot;base-service&quot;  /&gt;
+    &lt;!-- 用dubbo协议在29115端口暴露服务 --&gt;
+    &lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;29115&quot; /&gt;
+
+    &lt;!-- 定义接口实现类 --&gt;
+    &lt;bean id=&quot;helloService&quot; class=&quot;com.study.service.impl.HelloServiceImpl&quot;&gt;&lt;/bean&gt;
+    &lt;!-- 声明需要暴露的服务接口 --&gt;
+    &lt;dubbo:service interface=&quot;com.study.service.HelloService&quot; ref=&quot;helloService&quot; timeout=&quot;6000&quot;  registry=&quot;N/A&quot; /&gt;
+&lt;/beans&gt;
+</code></pre><p>配置文件中<code>registry=&quot;N/A&quot;</code>表示暴露的服务接口不注册任何注册中心。</p>
+<p>resources下添加log配置log4j.properties：</p>
+<pre><code>log4j.rootLogger=info, console
+
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.Threshold=debug
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=%5p %d{MM-dd HH:mm:ss}(%F:%L): %m%n
+</code></pre><p>此时配置文件目录结构为：</p>
+<pre><code>|-- resources
+    |-- META-INF
+        |-- spring
+            |-- application.xml
+    |-- log4j.properties
+</code></pre><p>添加主程序</p>
+<pre><code>public class Main
+{
+    public static void main( String[] args )
+    {
+
+        com.alibaba.dubbo.container.Main.main(args);
+    }
+}
+</code></pre><p>com.alibaba.dubbo.container.Main是dubbo提供的类，可以用来启动dubbo服务端。<br>运行Main.main方法，就已经完成了服务端的配置了。</p>
+<p>window下查看29115端口的占用情况</p>
+<pre><code>&gt; netstat -aon|findstr 29115
+  TCP    0.0.0.0:29115          0.0.0.0:0              LISTENING       4484
+  TCP    10.3.20.42:61814       10.3.20.42:29115       TIME_WAIT       0
+  TCP    [::]:29115             [::]:0                 LISTENING       4484
+</code></pre><h2 id="dubbo-client"><a href="#dubbo-client" class="headerlink" title="dubbo client"></a>dubbo client</h2><p>配置文件内容：</p>
+<pre><code>&lt;!-- 服务消费者应用名称，不要与提供者应用名称一致 --&gt;
+&lt;dubbo:application name=&quot;base-client&quot; /&gt;
+
+&lt;!-- 生成远程服务代理，可以和本地bean一样使用HelloService --&gt;
+&lt;dubbo:reference id=&quot;helloService&quot; interface=&quot;com.study.service.helloService&quot; url=&quot;dubbo://127.0.0.1:29115&quot;  timeout=&quot;60000&quot;/&gt;
+</code></pre><p><code>url=&quot;dubbo://127.0.0.1:29115&quot;</code>表示通过url直接连接服务端。<br>客户端需要使用服务端暴露的服务接口<code>com.study.service.IService</code>，可以直接copy源文件或将其打包jar。</p>
+<p>测试方法</p>
+<pre><code>public static void main( String[] args ) {
+    ClassPathXmlApplicationContext ctx = new  
+    ClassPathXmlApplicationContext(new String[]{&quot;classpath:META-INF/spring/application.xml&quot;});
+    ctx.start();
+
+    HelloService service = (HelloService)ctx.getBean(&quot;helloService&quot;);
+
+    System.out.println(service.hello(&quot;bin&quot;));
+}
+</code></pre><p>运行main方法，客户端就可以远程调用服务端的方法了。</p>
+<h2 id="zookeeper注册中心"><a href="#zookeeper注册中心" class="headerlink" title="zookeeper注册中心"></a>zookeeper注册中心</h2><p>上述简单实例中并没有使用注册中心，下面使用zookeeper作为注册中心<br>服务端pom中添加zk依赖：</p>
+<pre><code>&lt;!-- zookeeper 注册中心 --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.zookeeper&lt;/groupId&gt;
+  &lt;artifactId&gt;zookeeper&lt;/artifactId&gt;
+  &lt;version&gt;3.3.3&lt;/version&gt;
+  &lt;exclusions&gt;
+    &lt;exclusion&gt;
+      &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+      &lt;groupId&gt;log4j&lt;/groupId&gt;
+    &lt;/exclusion&gt;
+  &lt;/exclusions&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;com.github.sgroschupf&lt;/groupId&gt;
+  &lt;artifactId&gt;zkclient&lt;/artifactId&gt;
+  &lt;version&gt;0.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><p>修改配置文件为：</p>
+<pre><code>&lt;!-- 提供方应用信息，用于计算依赖关系 --&gt;
+&lt;dubbo:application name=&quot;base-service&quot;  /&gt;
+&lt;!-- 使用zookeeper注册中心暴露服务地址 --&gt;
+&lt;dubbo:registry address=&quot;zookeeper://54.70.215.146:2181&quot; /&gt;
+&lt;!-- 用dubbo协议在29115端口暴露服务 --&gt;
+&lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;29115&quot; /&gt;
+
+&lt;!-- 定义接口实现类 --&gt;
+&lt;bean id=&quot;baseService&quot; class=&quot;com.study.service.BaseService&quot;&gt;&lt;/bean&gt;
+&lt;!-- 声明需要暴露的服务接口 --&gt;
+&lt;dubbo:service interface=&quot;com.study.service.IService&quot; ref=&quot;baseService&quot; timeout=&quot;6000&quot;/&gt;
+</code></pre><p>重启服务端，在zk客户端中可以查看dubbo生成的文件</p>
+<pre><code>[zk: 127.0.0.1:2181(CONNECTED) 1] ls /
+[dubbo, zookeeper]
+</code></pre><p>客户端修改配置文件：</p>
+<pre><code>&lt;!-- 服务消费者应用名称，不要与提供者应用名称一致 --&gt;
+&lt;dubbo:application name=&quot;base-client&quot; /&gt;
+&lt;!-- 使用zookeeper注册中心订阅服务地址 --&gt;
+&lt;dubbo:registry address=&quot;zookeeper://54.70.215.146:2181&quot;/&gt;
+
+&lt;dubbo:reference id=&quot;service&quot; interface=&quot;com.study.service.IService&quot;   timeout=&quot;60000&quot;/&gt;
+</code></pre><p>此时可以通过注册中心访问服务端了。</p>
+<h2 id="dubbox入门"><a href="#dubbox入门" class="headerlink" title="dubbox入门"></a>dubbox入门</h2><p>dubbox是当当网对ddubbo的开源扩展，支持REST风格远程调用。项目地址：<a href="https://github.com/dangdangdotcom/dubbox" target="_blank" rel="external">https://github.com/dangdangdotcom/dubbox</a>  </p>
+<p>dubbox并没有上传jar到maven仓库，所以需要编译java代码</p>
+<pre><code>git clone https://github.com/dangdangdotcom/dubbox
+</code></pre><p>在checkout出来的dubbox目录执行mvn install -Dmaven.test.skip=true来尝试编译一下dubbo（并将dubbo的jar安装到本地maven库）<br>（maven下载相关依赖包可能速度比较慢，我是在亚马逊 aws上编译成功的。）</p>
+<p>这一步完成后，maven项目就可以直接引用dubbo 2.8.4了</p>
+<h2 id="dubbox-service"><a href="#dubbox-service" class="headerlink" title="dubbox service"></a>dubbox service</h2><p>将上述dubbo service项目中pom中添加</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+  &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+  &lt;version&gt;2.8.4&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!--  RESTEasy，JBoss实现JAX-RS --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.jboss.resteasy&lt;/groupId&gt;
+  &lt;artifactId&gt;resteasy-jaxrs&lt;/artifactId&gt;
+  &lt;version&gt;3.0.7.Final&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.jboss.resteasy&lt;/groupId&gt;
+  &lt;artifactId&gt;resteasy-client&lt;/artifactId&gt;
+  &lt;version&gt;3.0.7.Final&lt;/version&gt;
+&lt;/dependency&gt;
+
+
+&lt;!-- tomcat --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+  &lt;artifactId&gt;tomcat-embed-core&lt;/artifactId&gt;
+  &lt;version&gt;8.0.11&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+  &lt;artifactId&gt;tomcat-embed-logging-juli&lt;/artifactId&gt;
+  &lt;version&gt;8.0.11&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;javax.validation&lt;/groupId&gt;
+  &lt;artifactId&gt;validation-api&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0.GA&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><p><strong>（记得删除原来dubbo的引用）</strong></p>
+<p>这里重新执行main方法，并使用dubbo client仍然能调用成功。</p>
+<h2 id="REST远程调用"><a href="#REST远程调用" class="headerlink" title="REST远程调用"></a>REST远程调用</h2><p>配置文件resources/META-INF/spring/application.xml 添加rest协议：</p>
+<pre><code>&lt;!-- 使用tomcat开放rest接口 --&gt;
+&lt;dubbo:protocol name=&quot;rest&quot; port=&quot;8888&quot; threads=&quot;500&quot; contextpath=&quot;services&quot; server=&quot;tomcat&quot; accepts=&quot;500&quot;/&gt;
+</code></pre><p>rest接口及实现</p>
+<pre><code>package com.study.service;
+
+public interface EchoService {
+    String echo(String msg);
+}
+
+
+
+package com.study.service.impl;
+
+import com.study.service.EchoService;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;  
+
+
+@Path(value = &quot;echo&quot;)
+public class EchoServiceImpl implements EchoService{
+    @GET
+    @Path(value = &quot;/{message}&quot;)
+    public String echo(@PathParam(&quot;message&quot;) String message)
+    {
+        return message;
+    }
+}
+</code></pre><p>配置文件resources/META-INF/spring/application.xml 添加rest开放接口</p>
+<pre><code>&lt;bean id=&quot;echoService&quot; class=&quot;com.study.service.impl.EchoServiceImpl&quot;&gt;&lt;/bean&gt;
+&lt;dubbo:service interface=&quot;com.study.service.EchoService&quot; ref=&quot;echoService&quot;  protocol=&quot;rest&quot;/&gt;
+</code></pre><p>声明helloService使用dubbo协议，修改为</p>
+<pre><code>&lt;dubbo:service interface=&quot;com.study.service.HelloService&quot; ref=&quot;helloService&quot; timeout=&quot;6000&quot; protocol=&quot;dubbo&quot;/&gt;
+</code></pre><p>重新执行main方法，使用浏览器访问 <a href="http://localhost:8888/services/echo/123" target="_blank" rel="external">http://localhost:8888/services/echo/123</a> 就可以看到浏览器显示服务端返回的字符串”123”</p>
+<p>待扩展：<br>dubbo 监控<br>dubbox 基于Kryo和FST的Java高效序列化实现</p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/dubbo-dubbox.md" data-title="dubbo与dubbox入门" data-url="https://binecy.coding.me/dubbo-dubbox/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" ></div>
+		</div>
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,417 @@
+	<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>spring获取bean - 源码简析 | binecy</title>
+  <meta name="author" content="bin">
+  
+  <meta name="description" content="在spring加载配置-源码简析中简单描述了spring加载配置文件的过程，现在再来分析一下spring获取bean的过程。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="spring获取bean - 源码简析"/>
+  <meta property="og:site_name" content="binecy"/>
+
+  
+  
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#009688">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#009688">
+		<!-- favicon end -->
+    <!-- <link href="/favicon.ico" rel="icon"> -->
+  
+
+  <!-- toc -->
+  <link rel="stylesheet" href="/libs/tocify/jquery.tocify.css" media="screen" type="text/css">
+
+  <!-- <link rel="stylesheet" href="/libs/bs/css/bootstrap.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" media="screen" type="text/css">
+
+  <!-- material design -->
+	<!-- <link rel="stylesheet" href="/libs/bs-material/css/ripples.min.css" media="screen" type="text/css"> -->
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/ripples.min.css" media="screen" type="text/css">
+  <!-- <link rel="stylesheet" href="/libs/bs-material/css/material.min.css" media="screen" type="text/css"> -->
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap-material/0.3.0/css/material.min.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/highlight.light.css" media="screen" type="text/css">
+
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+  
+
+  
+
+  <script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/libs/jquery-2.0.3.min.js" type="text/javascript"><\/script>')</script>
+
+</head>
+
+ 	<body>
+	  <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">菜单</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">binecy</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li>
+                    <a href="/" title="">
+                    <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/archives" title="">
+                    <i class="fa fa-list"></i>存档
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/about" title="">
+                    <i class="fa fa-info-circle"></i>关于
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+	  <div class="container" >
+	    <div class="row">
+	
+	<div class="col-md-9 center-content">
+	
+
+		<div class="content">
+			<!-- index -->
+		   
+
+			  		<h2>spring获取bean - 源码简析</h2>
+					
+					<div>
+						<span class="post-time">2016-12-16 07:45:24</span>
+					</div>	
+					
+
+					<div class="article-content">
+						<p>在<a href="/java-spring-load-config/" title="spring加载配置-源码简析">spring加载配置-源码简析</a>中简单描述了spring加载配置文件的过程，现在再来分析一下spring获取bean的过程。<br><a id="more"></a></p>
+<pre><code class="java">    Blog bean = (Blog)xmlBeanFactory.getBean(&quot;blog&quot;);
+</code></pre>
+<p>XmlBeanFactory继承了AbstractBeanFactory，<code>getBean</code>将调用AbstractBeanFactory.doGetBean方法。该方法是读取bean的实现。</p>
+<p>AbstractBeanFactory.doGetBean：</p>
+<pre><code class="java">protected &lt;T&gt; T doGetBean(
+        final String name, final Class&lt;T&gt; requiredType, final Object[] args, boolean typeCheckOnly) ... {
+    final String beanName = transformedBeanName(name);    // 处理别名
+
+    Object sharedInstance = getSingleton(beanName);        // 从单例缓存中获取
+
+    // 父Factory
+    BeanFactory parentBeanFactory = getParentBeanFactory();
+
+    // 配置文件
+    final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+
+
+    // 处理依赖
+    String[] dependsOn = mbd.getDependsOn();
+
+    // bean范围为Singleton
+    if (mbd.isSingleton()) {
+
+        sharedInstance = getSingleton(beanName, new ObjectFactory&lt;Object&gt;() {
+
+                    public Object getObject() throws BeansException {
+                        ...
+                        return createBean(beanName, mbd, args);        // 真正创建bean
+
+                    }
+                });
+                bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+    } else if() {    // 其他处理
+        ...
+    }        
+}
+</code></pre>
+<p><code>getObjectForBeanInstance</code>方法会根据参数beanInstance进行处理，如果beanInstance是FactoryBean会创建bean，返回直接返回beanInstance。</p>
+<p>需要注意，这里调用了两个重载方法 <code>getSingleton(String beanName)</code>和<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>  </p>
+<p>重载方法一<code>getSingleton(beanName)</code>从容器中获取单例bean。<br>DefaultSingletonBeanRegistry.getSingleton:</p>
+<pre><code class="java">    protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+        ...
+        Object singletonObject = this.singletonObjects.get(beanName);    
+
+                singletonObject = this.earlySingletonObjects.get(beanName);
+
+        }
+        return (singletonObject != NULL_OBJECT ? singletonObject : null);
+    }
+</code></pre>
+<p>singletonObject用于缓存单例的bean<br>earlySingletonObjects则缓存正在创建的bean</p>
+<p>重载方法二<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>会通过ObjectFactory创建一个单例bean。<br>DefaultSingletonBeanRegistry.getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory):</p>
+<pre><code>public Object getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory) {
+    beforeSingletonCreation(beanName);    // 错误检查,子类可扩展
+
+    singletonObject = singletonFactory.getObject();        // 创建bean
+    newSingleton = true;
+
+    afterSingletonCreation(beanName);
+
+    if (newSingleton) {
+        addSingleton(beanName, singletonObject);    // 将bean加入到singletonObject等缓存中
+    }
+
+}
+</code></pre><p>bean创建过程在<code>return createBean(beanName, mbd, args);</code>代码，<br><code>createBean</code>方法由AbstractAutowireCapableBeanFactory实现：</p>
+<pre><code class="java">protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) ... {
+
+    // 解析class
+    Class&lt;?&gt; resolvedClass = resolveBeanClass(mbd, beanName);
+
+    // 注意，如果resolveBeforeInstantiation返回非null对象，这里将直接返回
+    Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+    if (bean != null) {
+        return bean;
+    }
+
+    // 创建bean
+    Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+
+    return beanInstance;
+}
+
+protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
+    bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
+
+    if (bean != null) {
+        bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+    }
+
+}
+</code></pre>
+<p><code>resolveBeforeInstantiation</code>会调用前置处理方法InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation,如果InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation返回非null对象,createBean将直接返回该对象,所以用户可以通过实现InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation自定义bean对象。</p>
+<p>AbstractAutowireCapableBeanFactory.doCreateBean:</p>
+<pre><code>protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final Object[] args) {
+    BeanWrapper instanceWrapper = null;
+
+    // 创建属性为空的bean
+    instanceWrapper = createBeanInstance(beanName, mbd, args);
+
+    // processor处理
+    if (!mbd.postProcessed) {
+        applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
+        mbd.postProcessed = true;
+    }
+
+    Object exposedObject = bean;
+    // 注入属性
+    populateBean(beanName, mbd, instanceWrapper);
+
+    // 调用init方法
+    if (exposedObject != null) {
+        exposedObject = initializeBean(beanName, exposedObject, mbd);
+    }
+
+    // 注册
+    registerDisposableBeanIfNecessary(beanName, bean, mbd);
+}
+
+protected Object initializeBean(final String beanName, final Object bean, RootBeanDefinition mbd) {
+    // 调用BeanNameAware,BeanClassLoaderAware,BeanFactoryAware的set方法
+    invokeAwareMethods(beanName, bean);    
+
+    // ProcessorsBeforeInitialization方法
+    wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);    
+
+    // 调用init-method方法
+    invokeInitMethods()    
+
+    // 调用后处理器BeanPostProcessorsAfterInitialization.postProcessAfterInitialization 
+    wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);    
+
+}
+</code></pre><p>看一下beanWrapper的创建过程</p>
+<pre><code>protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
+    Class&lt;?&gt; beanClass = resolveBeanClass(mbd, beanName);
+
+    ...
+    // BeanPostProcessors是否指定构造方法
+    Constructor&lt;?&gt;[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
+    if (ctors != null ||
+            mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_CONSTRUCTOR ||
+            mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args))  {
+        return autowireConstructor(beanName, mbd, ctors, args);
+    }
+
+    // 没有指定，直接调用无参构造方法
+    return instantiateBean(beanName, mbd);
+
+}
+</code></pre><p><code>autowireConstructor</code>逻辑非常复杂，这里不展开。</p>
+<pre><code>protected BeanWrapper instantiateBean(final String beanName, final RootBeanDefinition mbd) {
+    ...
+    Object beanInstance;
+
+    beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, parent);    // 创建bena
+    BeanWrapper bw = new BeanWrapperImpl(beanInstance);    // 创建beanWrapper
+    initBeanWrapper(bw);    // 注册用户自定义的处理器
+    return bw;
+
+}
+</code></pre><p><code>getInstantiationStrategy()</code>返回CglibSubclassingInstantiationStrategy，CglibSubclassingInstantiationStrategy继承 SimpleInstantiationStrategy,<code>getInstantiationStrategy().instantiate</code>调用到<br>SimpleInstantiationStrategy.instantiate:</p>
+<pre><code>public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner) {
+    constructorToUse = (Constructor&lt;?&gt;) bd.resolvedConstructorOrFactoryMethod;
+
+
+        final Class&lt;?&gt; clazz = bd.getBeanClass();
+
+        constructorToUse =    clazz.getDeclaredConstructor((Class[]) null);    // 获取构造方法
+
+        return BeanUtils.instantiateClass(constructorToUse); // 返回实例
+}
+
+public static &lt;T&gt; T instantiateClass(Constructor&lt;T&gt; ctor, Object... args)... {
+    ReflectionUtils.makeAccessible(ctor);
+    return ctor.newInstance(args);    // 返回实例
+}
+</code></pre><p>在读取配置时，已经将属性的propername，type等基本消息读取存放到PropertyValues中，<br><code>populateBean</code>解析属性的值，并注入到bean中。</p>
+<pre><code>protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
+    PropertyValues pvs = mbd.getPropertyValues();    // 已从配置中读取的属性信息
+
+    ...
+
+    if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME ||
+            mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+        MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
+
+        // 通过bean name自动注入
+        if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {
+            autowireByName(beanName, mbd, bw, newPvs);
+        }
+
+        // 通过bean type自动注入
+        if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+            autowireByType(beanName, mbd, bw, newPvs);
+        }
+
+        pvs = newPvs;
+    }
+
+
+    boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+    // 根据需要进行postProcesst处理
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        if (bp instanceof InstantiationAwareBeanPostProcessor) {
+            InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+            pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+            if (pvs == null) {
+                return;
+            }
+        }
+    }
+
+    // 将值注到bean中
+    applyPropertyValues(beanName, mbd, bw, pvs);
+}
+</code></pre><p>查看一下通过bean name获取属性值</p>
+<pre><code>protected void autowireByName(
+            String beanName, AbstractBeanDefinition mbd, BeanWrapper bw, MutablePropertyValues pvs) {
+    for (String propertyName : propertyNames) {
+        Object bean = getBean(propertyName);    // 获取bean
+        pvs.add(propertyName, bean);    // 将bean添加到属性中
+        registerDependentBean(propertyName, beanName);    // 声明依赖
+    }            
+}
+</code></pre><p>属性的注入也是比较复杂的过程，这里不再展开了…</p>
+
+					</div>
+					
+			  <!-- about -->
+			  
+		</div>
+
+		<!-- pagination -->
+	  
+
+		<div class="comment-section">
+  
+  
+   <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="_posts/java-spring-get-bean.md" data-title="spring获取bean - 源码简析" data-url="https://binecy.coding.me/java-spring-get-bean/"></div>
+    <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'tanke773'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  
+
+
+</div>
+	</div>
+
+	
+
+</div>
+
+
+		<footer>
+			
+
+<!--
+<p>
+  &copy; 2017 <a href="https://binecy.coding.me"> bin </a>
+</p>
+-->
+<a id="gotop" href="#" title="back to top"><i class="mdi-hardware-keyboard-arrow-up"></i></a>
+
+		</footer>
+	  </div>
+
+		<!-- <script src="/libs/bs/js/bootstrap.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script>(typeof $().modal == 'function')|| document.write('<script src="/libs/bs/js/bootstrap.min.js" type="text/javascript"><\/script>')</script>
+
+		<!-- material design -->
+		<!-- <script src="/libs/bs-material/js/ripples.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/ripples.min.js"></script>
+		<!-- <script src="/libs/bs-material/js/material.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/bootstrap-material/0.3.0/js/material.min.js"></script>
+		<!-- toc -->
+		<!-- <script src="/libs/tocify/jquery-ui.min.js"></script> -->
+		<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
+
+		<script src="/js/main.js"></script>
+
+	</body>
+</html>
