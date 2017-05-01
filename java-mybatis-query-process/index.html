@@ -161,7 +161,7 @@ public void  test() throws IOException {
     }
 }
 </code></pre><p>例子很简单。</p>
-<p><strong>mybatis分层结构</strong>如下<br><img src="java-mybatis-query-process/1.png" alt=""></p>
+<p><strong>mybatis分层结构</strong>如下<br><img src="/java-mybatis-query-process/1.png" alt=""></p>
 <p>下面简单看一下mybatis中sql查询的执行流程。</p>
 <h2 id="构建过程"><a href="#构建过程" class="headerlink" title="构建过程"></a>构建过程</h2><p><code>new SqlSessionFactoryBuilder().build(inputStream)</code>会解析mybatis-config.xml配置文件，并构建SqlSessionFactory对象。</p>
 <pre><code>public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
@@ -273,7 +273,7 @@ private &lt;E&gt; List&lt;E&gt; queryFromDatabase(MappedStatement ms, Object par
 
   ParameterHandler getParameterHandler();
 }
-</code></pre><p>这些方法负责对真实数据库进行处理。StatementHandler有如下实现类<br><img src="java-mybatis-query-process/2.png" alt=""></p>
+</code></pre><p>这些方法负责对真实数据库进行处理。StatementHandler有如下实现类<br><img src="/java-mybatis-query-process/2.png" alt=""></p>
 <p><code>configuration.newStatementHandler</code>将生成一个RoutingStatementHandler类，RoutingStatementHandler实际上是对PreparedStatementHandler，CallableStatementHandler，SimpleStatementHandler的路由处理，会根据MappedStatement.StatementType，将请求对应转发到这些类上。  </p>
 <pre><code>public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
     StatementHandler statementHandler = new RoutingStatementHandler(executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);

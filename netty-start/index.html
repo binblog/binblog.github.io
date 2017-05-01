@@ -133,7 +133,7 @@ ChannelFuture f = b.bind(PORT).sync();
 
 // Wait until the server socket is closed.
 f.channel().closeFuture().sync();
-</code></pre><p>栗子中创建了    parentGroup和childGroup，<br>parentGroup负责处理请求的accept事件， 类似于reactor模式中的acceptor<br>childGroup负责接收请求的read、write事件，并分发给对应的处理器，类似于reactor模式中的reactor对象。<br><img src="netty-start/1.png" alt=""></p>
+</code></pre><p>栗子中创建了    parentGroup和childGroup，<br>parentGroup负责处理请求的accept事件， 类似于reactor模式中的acceptor<br>childGroup负责接收请求的read、write事件，并分发给对应的处理器，类似于reactor模式中的reactor对象。<br><img src="/netty-start/1.png" alt=""></p>
 <p><strong>创建NioEventLoopGroup</strong><br>NioEventLoopGroup实现了EventLoopGroup接口，负责对EventLoop进行管理。 NioEventLoopGroup的构造过程主要在MultithreadEventExecutorGroup构造方法中</p>
 <pre><code>protected MultithreadEventExecutorGroup(int nThreads, Executor executor,EventExecutorChooserFactory chooserFactory, Object... args) {                                    
     // 执行器
@@ -173,7 +173,7 @@ protected EventExecutor newChild(
 }
 </code></pre><p><code>channelFactory.newChannel()</code>中的channelFactory为ReflectiveChannelFactory对象，这时通过反射生成NioServerSocketChannel对象（通过ServerBootstrap.channel(NioServerSocketChannel.class)设置）</p>
 <p>NioServerSocketChannel是对java.nio.channels.ServerSocketChannel的封装,实现了io.netty.channel.Channel接口。</p>
-<p><strong>创建NioServerSocketChannel</strong><br><img src="netty-start/2.png" alt=""></p>
+<p><strong>创建NioServerSocketChannel</strong><br><img src="/netty-start/2.png" alt=""></p>
 <pre><code>public NioServerSocketChannel() {
     this(newSocket(DEFAULT_SELECTOR_PROVIDER));
 }

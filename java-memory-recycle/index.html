@@ -136,11 +136,11 @@
 </ul>
 <h4 id="stop-the-world"><a href="#stop-the-world" class="headerlink" title="stop the world"></a>stop the world</h4><p>可达性分析必须在一个能确保一致性的快照中进行, 就是整个分析期间整个执行系统看起来就像被冻结在某个时间点上, 不可以出现分析过程中对象引用关系还在不断变化的情况. 这点导致GC进行时必须停顿所有的java执行线程.</p>
 <h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记 - 清除算法"></a>标记 - 清除算法</h3><p>分为”标记”和”清除”两个阶段:首先标记出所有需要回收的对象, 在标记完成后统一回收所有被标记的对象.</p>
-<p>不足:<br>效率问题:标记和清除的效率都不高<br>空间问题:标记清除的产生大量不连续的内存碎片.<br><img src="java-memory-recycle/1.png" alt=""></p>
+<p>不足:<br>效率问题:标记和清除的效率都不高<br>空间问题:标记清除的产生大量不连续的内存碎片.<br><img src="/java-memory-recycle/1.png" alt=""></p>
 <h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>将可用内存划分为容量大小相等的两块, 每次只使用基本一块. 当这一块内存用完了, 将存活的对象复制到另外一块, 将这一块内存一次清除.</p>
-<p>不足:<br>可用内存缩小为原来的一半.<br><img src="java-memory-recycle/2.png" alt=""></p>
-<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记 - 整理算法"></a>标记 - 整理算法</h3><p>与标记 - 清除算法一样, 但后续步骤不是直接对可回收对象进行清理, 而是让所有存活的对象都向一端移动, 然后直接清理掉边界外的内存.<br><img src="java-memory-recycle/3.png" alt=""></p>
-<h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><h3 id="内存分区"><a href="#内存分区" class="headerlink" title="内存分区"></a>内存分区</h3><p>JVM根据对象存活周期不同将内存划分为几块. 一般将Java堆分为年轻区和年老代.<br><img src="java-memory-recycle/4.png" alt=""></p>
+<p>不足:<br>可用内存缩小为原来的一半.<br><img src="/java-memory-recycle/2.png" alt=""></p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记 - 整理算法"></a>标记 - 整理算法</h3><p>与标记 - 清除算法一样, 但后续步骤不是直接对可回收对象进行清理, 而是让所有存活的对象都向一端移动, 然后直接清理掉边界外的内存.<br><img src="/java-memory-recycle/3.png" alt=""></p>
+<h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><h3 id="内存分区"><a href="#内存分区" class="headerlink" title="内存分区"></a>内存分区</h3><p>JVM根据对象存活周期不同将内存划分为几块. 一般将Java堆分为年轻区和年老代.<br><img src="/java-memory-recycle/4.png" alt=""></p>
 <h3 id="年轻区回收-Minor-GC"><a href="#年轻区回收-Minor-GC" class="headerlink" title="年轻区回收 Minor GC"></a>年轻区回收 Minor GC</h3><p>年轻区每次收集都有大批对象死去, 所以选用复制算法。<br>对象的内存分配都是先在Eden区域中进行的，当Eden区域的空间不足于分配新对象时，就会触发年轻区上的垃圾回收（发生在Eden和Survivor内存区域上），所有存活的对象（仍然可达对象）会被拷贝到其中一个Survivor区域。<br>当第二次minor gc被触发时，JVM会会将Eden内存区域和Survivor1内存区域存活的对象拷贝到新的Survivor2内存区域，并清空Eden内存区域和Survivor1内存区域。</p>
 <h4 id="进入年老区"><a href="#进入年老区" class="headerlink" title="进入年老区"></a>进入年老区</h4><p>虚拟机给每个对象定义了一个对象年龄计数器。如果对象在Eden出生并经过第一次Minor GC后仍存活并被移到Survivor空间，那对象年龄将被设为1。对象在Survivor区每经过一次Minor GC，年龄就加1。当它的年龄增加到一定程度（默认为15，可通过 -XX:maxtenuringthreshold配置）, 将被移动到年老区.</p>
 <p>如果在Survivor空间中相同年龄的对象大小总和大于Survivor空间的一半, 年龄大于或等于该年龄的对象直接进行年老代, 无须等到maxtenuringthreshold要求的年龄.</p>

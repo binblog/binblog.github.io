@@ -290,10 +290,10 @@ public class TCPClient {
         clientChannel.close();
     }
 }
-</code></pre><h2 id="NIO优势"><a href="#NIO优势" class="headerlink" title="NIO优势"></a>NIO优势</h2><p>下图是几种常见I/O模型的对比：<br><img src="java-nio/1.png" alt=""><br>所有的系统I/O都分为两个阶段：等待就绪和操作。例如，读函数，分为等待系统可读和真正的读；同理，写函数分为等待网卡可以写和真正的写。</p>
+</code></pre><h2 id="NIO优势"><a href="#NIO优势" class="headerlink" title="NIO优势"></a>NIO优势</h2><p>下图是几种常见I/O模型的对比：<br><img src="/java-nio/1.png" alt=""><br>所有的系统I/O都分为两个阶段：等待就绪和操作。例如，读函数，分为等待系统可读和真正的读；同理，写函数分为等待网卡可以写和真正的写。</p>
 <p>等待就绪的阻塞是不使用CPU的，是在“空等”；而真正的读写操作的阻塞是使用CPU的，真正在”干活”，而且这个过程非常快，属于memory copy，带宽通常在1GB/s级别以上，可以理解为基本不耗时。<br>以socket.read()为例子：</p>
 <p>传统的BIO里面socket.read()，如果TCP RecvBuffer里没有数据，进程会一直阻塞，直到收到数据，返回读到的数据。</p>
-<p>而对于NIO，即上图的io复用，需要使用selector角色。一个selector角色可以负责多个socket。当用户进程调用了selector.select，那么整个进程会被block，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。<br><img src="java-nio/2.png" alt=""></p>
+<p>而对于NIO，即上图的io复用，需要使用selector角色。一个selector角色可以负责多个socket。当用户进程调用了selector.select，那么整个进程会被block，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。<br><img src="/java-nio/2.png" alt=""></p>
 <blockquote>
 <p>所以，I/O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</p>
 </blockquote>
@@ -302,7 +302,7 @@ public class TCPClient {
 <h2 id="Reactor模式"><a href="#Reactor模式" class="headerlink" title="Reactor模式"></a>Reactor模式</h2><p>为了提高并发量，nio常与多线程结合使用。reactor是事件通知机制，有助于优雅地使用nio和多线程。</p>
 <p>reactor模式中定义了reactor角色，它不断等待和循环，接收系统IO就绪事件，IO就绪后就将IO事件分派给指定handler进行处理。</p>
 <p>标准/典型的Reactor：<br>步骤1：等待事件到来（Reactor负责）。<br>步骤2：将读就绪事件分发给用户定义的处理器（Reactor负责）。<br>步骤3：读数据（用户处理器负责）。<br>步骤4：处理数据（用户处理器负责）。</p>
-<p><img src="java-nio/3.png" alt=""><br>reactor</p>
+<p><img src="/java-nio/3.png" alt=""><br>reactor</p>
 <pre><code>import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;

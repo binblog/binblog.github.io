@@ -122,7 +122,7 @@
 <p>除了Java语言， 其他语言也可以运行在Java虚拟机上。Java规范分为Java语言规范和Java虚拟机规范。 Java虚拟机不和包括Java在内的任何语言绑定， 它只与“Class文件”这种特定的二进制文件格式所关联。基于安全方面的考虑， Java虚拟机规范要求在Class文件中使用许多强制性的语法及结构化约束，但任何一门功能性语言， 只要可以把程序代码编译成能被Java虚拟机接受的有效的Class文件， 它就可以运行在Java虚拟机上。</p>
 <h2 id="Class类文件结构"><a href="#Class类文件结构" class="headerlink" title="Class类文件结构"></a>Class类文件结构</h2><p>Class文件中只有两种数据类型：无符号数和表</p>
 <p>无符号数属于基本的数据类型， 以u1, u2, u4, u8分别表示1个字节， 2个字节， 4个字节和8个字节， 无符号数可以用来描述数字， 索引引用， 数量值或者按照UTF-8编码构成的字符串值。</p>
-<p>表是由多个无符号数或者其他表作为数据项构成的复合数据类型， 所有表都习惯地以”_info”结构。表用于描述有层次关系的复合结构的数据， 整个Class文件本质上就是一张表：<br><img src="java-class-format/1.png" alt=""><br>无论是无符号数还是表，当需要描述同一类型但数量不一定的多个数据时，经常会使用一个前置的容量计数器加若干个连续的数据项的形式。</p>
+<p>表是由多个无符号数或者其他表作为数据项构成的复合数据类型， 所有表都习惯地以”_info”结构。表用于描述有层次关系的复合结构的数据， 整个Class文件本质上就是一张表：<br><img src="/java-class-format/1.png" alt=""><br>无论是无符号数还是表，当需要描述同一类型但数量不一定的多个数据时，经常会使用一个前置的容量计数器加若干个连续的数据项的形式。</p>
 <h3 id="魔数-版本号-magic-version"><a href="#魔数-版本号-magic-version" class="headerlink" title="魔数/版本号 magic/version"></a>魔数/版本号 magic/version</h3><p>每个Class文件中头4个字节称为魔数（magic）， 用于确定这个文件是否为一个能被虚拟机接受的Class文件。</p>
 <p>第5,6个字节是Class文件次版本号（minor_version）， 第7,8个字节是主版本号（major_version）。高版本的JKD向下兼容以前版本的Class文件， 但不能运行以后版本的Class文件，即使文件格式并末发生变化。</p>
 <h3 id="常量池-constant-pool"><a href="#常量池-constant-pool" class="headerlink" title="常量池 constant_pool"></a>常量池 constant_pool</h3><p>constant_pool_count为常量池容量计数值，注意这个计数从1开始。假若该值为0x0016，即十进制的22，则表示常量池中有21项常量，索引值范围为1~21。Class文件结构中只有常量池容量计数是从1开始，其他集合类型，包括接口索引集合，字段表集合，方法表集合等容量计数是从0开始。</p>
@@ -232,7 +232,7 @@
 </tbody>
 </table>
 <p>access_flags表示字段是否为public，static，final，volatile，transient等信息。</p>
-<p>name_index和descript_index都是对常量池的引用，分别代表字段的简单名称和描述符。<br>简单名称是指没有类型和参数修饰的字符名称， 如<code>private String title;</code>字段简单名称为”title”<br>描述符描述字段的数据类型，基本数据类型和代表无返回值的void类型都用一个大写字符表示，而对象类型则用字符L加对象的全限定名表示。<br><img src="java-class-format/2.png" alt=""><br>对于数组类型，每一维度将使用一个前置的”[“字符来描述。如”java.lang.String[][]”表示为”[[Ljava/lang/String”，”int[]”被记录为”[I”  </p>
+<p>name_index和descript_index都是对常量池的引用，分别代表字段的简单名称和描述符。<br>简单名称是指没有类型和参数修饰的字符名称， 如<code>private String title;</code>字段简单名称为”title”<br>描述符描述字段的数据类型，基本数据类型和代表无返回值的void类型都用一个大写字符表示，而对象类型则用字符L加对象的全限定名表示。<br><img src="/java-class-format/2.png" alt=""><br>对于数组类型，每一维度将使用一个前置的”[“字符来描述。如”java.lang.String[][]”表示为”[[Ljava/lang/String”，”int[]”被记录为”[I”  </p>
 <p>attribute_info 表示一个属性表集合，包含若干属性表，用于存储一些额外的信息。</p>
 <p><strong>字段表不会列出从超类或父接口中继承来的字段， 但可能列出原Java代码中不存在的字段， 如在内部类中为了保持对外部类的访问性，会自动添加指向外部类实例的字段。</strong></p>
 <h3 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h3><p>方法表与字段表类似， 结构如下：</p>
@@ -362,7 +362,7 @@ public class Blog
     this.title = title;
   }
 }
-</code></pre><p>使用WinHex打开class文件<br><img src="java-class-format/3.png" alt=""></p>
+</code></pre><p>使用WinHex打开class文件<br><img src="/java-class-format/3.png" alt=""></p>
 <p>根据上述的class类定义，解析这个class文件</p>
 <table>
 <thead>

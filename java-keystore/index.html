@@ -175,7 +175,7 @@ KeyIdentifier [
 0010: 93 5B 37 CE                                        .[7.
 ]
 ]
-</code></pre><p>使用KeyStore Explorer 打开server.keystore<br><img src="java-keystore/1.png" alt=""><br>可以看到当前密钥库中存在两个条目，一个是client的证书，另一个是server的密钥对，可以使用密钥对导出证书。</p>
+</code></pre><p>使用KeyStore Explorer 打开server.keystore<br><img src="/java-keystore/1.png" alt=""><br>可以看到当前密钥库中存在两个条目，一个是client的证书，另一个是server的密钥对，可以使用密钥对导出证书。</p>
 <p>java中定义了java.security.KeyStore，javax.net.ssl.KeyManagerFactory，javax.net.ssl.TrustManagerFactory这几个类来处理KeyStore，PrivateKey，Certificate。</p>
 <p>在java程序中<code>trustManagerFactory.init(null);</code>加载证时，java会按如下顺序查找keystore  </p>
 <ol>

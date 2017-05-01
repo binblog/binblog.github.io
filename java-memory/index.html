@@ -119,7 +119,7 @@
 					<div class="article-content">
 						<p>文章描述了java运行时内存分区，包括程序计数器，Java虚拟机栈，本地方法栈，Java堆，方法区以及java8内存分区的变化。<br><a id="more"></a></p>
 <p><strong>运行时数据区域</strong><br>java虚拟机在执行java程序的过程中会把它管理的内存划分为若干不同的数据区域。这些区域都有各自的用途，以及创建和销毁时间。有的区域随着虚拟机启动而存在，有些区域则依赖用户线程的启动和结束而建立和销毁。  </p>
-<p><img src="java-memory/3.png" alt=""></p>
+<p><img src="/java-memory/3.png" alt=""></p>
 <h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>每一条java虚拟机线程都有自己的pc寄存器。<br>如果当前方法不是Native方法，pc寄存器会保存虚拟机正在执行的字节码指令的地址;如果当前方法是Native方法，则pc寄存器的值为undefined。</p>
 <p>此区域任何情况都不能导致OutOfMemoryError情况的区域  </p>
 <h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>线程私有,生命周期与线程相同.</p>
@@ -171,8 +171,8 @@ public class HeapOOM {
 <p>线程共享</p>
 <p>当方法区无法满足内存分配需求时, 将抛出OutOfMemoryError异常.</p>
 <p>方法区常被称为“永久代”，实际上Full GC会进行持久代的回收。</p>
-<h2 id="jdk8变化"><a href="#jdk8变化" class="headerlink" title="jdk8变化"></a>jdk8变化</h2><p>jdk6:<br><img src="java-memory/1.png" alt=""></p>
-<p>jdk8:<br><img src="java-memory/2.png" alt=""><br>从JDK7已经开始永久代的移除工作了，贮存在永久代的一部分数据已经转移到了Java Heap或者是Native Heap。但永久代仍然存在于JDK7，并没有完全的移除：符号引用(Symbols)转移到了native heap;字面量(interned strings)转移到了java heap;类的静态变量(class statics)转移到了java heap。<br>Jdk8 中方法区被完全的移除了，直接使用本地内存来表示类的元数据，这个区域就叫做元空间。<br>JVM会忽略PermSize和MaxPermSize这两个参数，也不会出现java.lang.OutOfMemoryError: PermGen error的异常了。  </p>
+<h2 id="jdk8变化"><a href="#jdk8变化" class="headerlink" title="jdk8变化"></a>jdk8变化</h2><p>jdk6:<br><img src="/java-memory/1.png" alt=""></p>
+<p>jdk8:<br><img src="/java-memory/2.png" alt=""><br>从JDK7已经开始永久代的移除工作了，贮存在永久代的一部分数据已经转移到了Java Heap或者是Native Heap。但永久代仍然存在于JDK7，并没有完全的移除：符号引用(Symbols)转移到了native heap;字面量(interned strings)转移到了java heap;类的静态变量(class statics)转移到了java heap。<br>Jdk8 中方法区被完全的移除了，直接使用本地内存来表示类的元数据，这个区域就叫做元空间。<br>JVM会忽略PermSize和MaxPermSize这两个参数，也不会出现java.lang.OutOfMemoryError: PermGen error的异常了。  </p>
 <pre><code>public class StringOomMock {
     private static String  base = &quot;string&quot;;
     public static void main(String[] args) {

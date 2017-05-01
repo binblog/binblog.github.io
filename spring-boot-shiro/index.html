@@ -344,7 +344,7 @@ $.ajax({
     url: &quot;http://localhost:8080/user/hello&quot;,
     type: &#39;GET&#39; 
 });
-</code></pre><p>连续调用上述两个ajax请求，在firefox firebug中查看网络请求：<br><img src="/images/spring_shiro/1.png" alt="image"><br>可以看到服务器已经将Cookies返回，其中JSESSIONID就是sessionId，但jquery在第二次请求中并没有将返回的Cookies发送到服务端，导致第二次请求失败。<br>可以使用withCredentials参数要求jquery ajax中携带服务端返回的Cookies</p>
+</code></pre><p>连续调用上述两个ajax请求，在firefox firebug中查看网络请求：<br><img src="/spring-boot-shiro/spring_shiro/1.png" alt="image"><br>可以看到服务器已经将Cookies返回，其中JSESSIONID就是sessionId，但jquery在第二次请求中并没有将返回的Cookies发送到服务端，导致第二次请求失败。<br>可以使用withCredentials参数要求jquery ajax中携带服务端返回的Cookies</p>
 <pre><code>$.ajax({
     url: &quot;http://localhost:8080/user/login?user=u1&amp;password=123&quot;,
     type: &#39;GET&#39;,
@@ -359,7 +359,7 @@ $.ajax({
         withCredentials: true
     }
 });
-</code></pre><p><img src="/images/spring_shiro/2.png" alt="image"><br>可以看到第二次请求已经携带第一次请求返回的Cookies了。</p>
+</code></pre><p><img src="/spring-boot-shiro/spring_shiro/2.png" alt="image"><br>可以看到第二次请求已经携带第一次请求返回的Cookies了。</p>
 <h3 id="复杂CORS跨域请求，OPTIONS请求的处理"><a href="#复杂CORS跨域请求，OPTIONS请求的处理" class="headerlink" title="复杂CORS跨域请求，OPTIONS请求的处理"></a>复杂CORS跨域请求，OPTIONS请求的处理</h3><p>当调用如delete等复杂CORS跨域请求时，浏览器会先发送一种”预请求”OPTIONS，此时服务端也需要返回”预回应”作为响应。预请求实际上是对服务端的一种权限请求，只有当预请求成功返回，实际请求才开始执行。  </p>
 <p>但shiro默认提供的form认证过滤器FormAuthenticationFilter对于”预请求”OPTIONS无法通过验证，所以这里重写FormAuthenticationFilter，对OPTIONS进行特别操作：</p>
 <pre><code>public class MyFormAuthorizationFilter extends FormAuthenticationFilter {
