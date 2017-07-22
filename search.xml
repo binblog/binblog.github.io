@@ -4,6 +4,108 @@
   
     
     <entry>
+      <title><![CDATA[javassist动态生成toString方法]]></title>
+      <url>https://binecy.coding.me/javassist-toString/</url>
+      <content type="html"><![CDATA[<p>javassist是一个开源的java字节码框架，其主要的优点，在于简单，而且快速。通过javassist，你不需要了解java虚拟机指令，就能动态改变类的结构，或者动态生成类。</p>
+<p>javassist使用指南:<br><a href="http://www.jianshu.com/p/43424242846b" target="_blank" rel="external">Javassist 使用指南（一）</a></p>
+<p>下面是我入门javassist的一个小栗子，通过javassist “重写”bean的<code>toString</code>方法，快速输出bean属性，非常适用于日志记录。</p>
+<p>bean类：</p>
+<pre><code>public class Blog {
+    private String title;
+    private String content;
+
+    ... getter and setter
+}
+</code></pre><p>StringDesc类用于输出bean的属性：</p>
+<pre><code>public class StringDesc&lt;T&gt; {
+
+    public T bean;
+
+    public T getBean() {
+        return bean;
+    }
+
+    public void setBean(T bean) {
+        this.bean = bean;
+    }    
+}
+</code></pre><p>如果没使用javassist，我们可以为每个bean写一个StringDesc继承类：</p>
+<pre><code>public class BlogStringDesc extends StringDesc&lt;Blog&gt; {
+    @Override
+    public String toString() {
+        return &quot;blog[title=&quot; + getBean().getTitle() + &quot;, content=&quot; + getBean().getContent() + &quot;]&quot;;
+    }
+}
+</code></pre><p>但这样太麻烦了，可以使用javassist为我们动态生成StringDesc继承类：</p>
+<pre><code>public class DynamicStringDesc {
+
+    public static &lt;T&gt; StringDesc&lt;T&gt; getStringDesc(Class&lt;T&gt; clazz) throws NotFoundException, CannotCompileException, IllegalAccessException, InstantiationException {
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new ClassClassPath(StringDesc.class));
+        pool.insertClassPath(new ClassClassPath(clazz));
+
+
+        CtClass stringDescCt = pool.get(StringDesc.class.getName());
+        // beanStringDescCt是动态生成的类
+        CtClass beanStringDescCt = pool.makeClass(clazz.getSimpleName() + &quot;StringDesc&quot;);
+        // 设置动态类的父类是StringDesc
+        beanStringDescCt.setSuperclass(stringDescCt);
+
+        // strBuilder用于构建toString方法体
+        StringBuilder strBuilder = new StringBuilder();
+
+        String beanClassName = clazz.getName();
+        strBuilder.append(&quot;java.lang.StringBuffer sb = new java.lang.StringBuffer();&quot;);
+        // 输出bean类名
+        strBuilder.append(&quot;sb.append(\&quot;&quot; + beanClassName  + &quot;[\&quot;);&quot;);
+
+        CtClass beanCt = pool.get(beanClassName);
+
+        CtMethod[] methods = beanCt.getMethods();
+        // 输出bean属性
+        for (CtMethod method : methods) {
+            if(method.getName().startsWith(&quot;get&quot;)) {
+                String fieldName = method.getName().substring(3).toLowerCase();
+
+                strBuilder.append(&quot;sb.append(\&quot;&quot; + fieldName + &quot;=\&quot; +((&quot; + beanClassName +&quot;)bean).&quot; + method.getName() + &quot;() + \&quot;, \&quot;);&quot;);
+
+            }
+        }
+
+        strBuilder.append(&quot;sb.append(\&quot;]\&quot;);&quot;);
+        strBuilder.append(&quot;return sb.toString();&quot;);
+
+        // 动态构建toString方法
+        CtMethod sm = new CtMethod(pool.get(&quot;java.lang.String&quot;), &quot;toString&quot;, null, beanStringDescCt);
+        // 设置方法体
+        sm.setBody(&quot;{&quot; + strBuilder.toString() + &quot;}&quot;);
+        // 将toString方法添加到动态类中
+        beanStringDescCt.addMethod(sm);
+
+        // 生成动态类实例
+        StringDesc stringDesc = (StringDesc)beanStringDescCt.toClass().newInstance();
+        return stringDesc;
+    }
+}
+</code></pre><p>可以看到，javassist支持我们将组装好的string作为方法体，为我们动态生成字节码，非常方便。</p>
+<p>DynamicStringDesc的使用也很方便：</p>
+<pre><code>        StringDesc&lt;Blog&gt; stringDesc = DynamicStringDesc.getStringDesc(Blog.class);
+        Blog blog = new Blog();
+        blog.setContent(&quot;hello&quot;);
+        blog.setTitle(&quot;this is test...&quot;);
+
+        stringDesc.setBean(blog);
+
+        System.out.println(stringDesc);
+</code></pre><p>好了，这是一个javassist使用的小栗子。还有很多可以调整的地方（如修改输出格式，输出过滤Object属性），这里不再继续了。</p>
+<p>已将代码上传到<a href="https://github.com/binecy/bin-learning/tree/master/proxy-start/src/main/java/com/javassist/start" target="_blank" rel="external">binecy github</a> ，有兴趣的同学可以看看</p>
+<p>参考：<br><a href="http://xsmart.iteye.com/blog/1896871" target="_blank" rel="external">使用Javassist重写Java Bean的toString方法</a><br><a href="http://javatar.iteye.com/blog/814426" target="_blank" rel="external">动态代理方案性能对比</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[mysql explain中的type类型]]></title>
       <url>https://binecy.coding.me/mysql-explain-type/</url>
       <content type="html"><![CDATA[<p>mysql中常使用explain查看sql进行计划，而type类型是非常重要的。这里主要描述一下type的几种类型和意义。</p>
@@ -104,7 +206,7 @@ CREATE TABLE `author2` (
 <p><strong>一些想法</strong><br>关于裸辞<br>裸辞会导致压力增大，面试谈薪资等方面也不利，慎行之。</p>
 <p>这次找工作经历两个阶段。一阶段是自己没准备好，技能知识或面试技巧没准备好，建议面试前多看看面经（学习理解而不是背），对于一些经常问的非技术问题，心里先确定自己的想法。二阶段是自己投错了公司，不同行业（或公司）对技术要求是不同的，特别是一些行业对技术是不太重视的，就算是海投，也要选择合适自己的职位，不然就是浪费时间。</p>
 <p>参考：<br><a href="http://www.importnew.com/12773.html" target="_blank" rel="external">Java线程面试题 Top 50</a><br><a href="http://www.jianshu.com/p/f5dee1306d0d" target="_blank" rel="external">年底啦，java后台面试题整理</a><br><a href="http://www.jianshu.com/p/1b2f63a45476" target="_blank" rel="external">关于Java面试，你应该准备这些知识点</a><br><a href="https://segmentfault.com/a/1190000004716061" target="_blank" rel="external">近期Java高级工程师面试总结</a><br><a href="https://yq.aliyun.com/articles/38181" target="_blank" rel="external">数据库和MySQL相关面试题目</a><br><a href="http://www.jianshu.com/p/1bc003884232" target="_blank" rel="external">java服务器后台面试题整理</a><br><a href="http://jeffzzf.github.io/2015/07/04/Java%E5%B9%B6%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86/" target="_blank" rel="external">Java并发面试题整理</a><br><a href="http://www.3023.com/6316/391446829072641.html" target="_blank" rel="external">你掌握以下50道题目，我包你进BAT任何一家公司</a></p>
-<p><a href="http://www.cnblogs.com/xrq730/p/5260294.html#3650335" target="_blank" rel="external">面试感悟—-一名3年工作经验的程序员应该具备的技能</a><br><a href="http://www.importnew.com/22056.html" target="_blank" rel="external">阿里面试回来，想和Java程序员谈一谈</a></p>
+<p><a href="http://www.cnblogs.com/xrq730/p/5260294.html#3650335" target="_blank" rel="external">面试感悟—-一名3年工作经验的程序员应该具备的技能</a><br><a href="http://www.importnew.com/22056.html" target="_blank" rel="external">阿里面试回来，想和Java程序员谈一谈</a><br><a href="http://www.cnblogs.com/binyue/p/4015884.html" target="_blank" rel="external">阿里、百度、搜狐等公司社招面试记录与总结</a></p>
 ]]></content>
       
         
