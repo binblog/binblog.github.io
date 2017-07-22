@@ -5372,8 +5372,8 @@ t.replace(&quot;|&quot;, &quot;,&quot;);    // 123,456,789
 t.replaceAll(&quot;\\|&quot;, &quot;,&quot;);   // 123,456,789
 
 t.replaceFirst(&quot;\\|&quot;, &quot;,&quot;); // 123,456|789
-</code></pre><p>注意上面三个方法，<br><code>replace(char oldChar, char newChar)</code>两个参数都是字符串，所以<code>|</code>不需要转义。<br><code>replace(CharSequence target, CharSequence replacement)</code>与<code>replaceAll(String regex, String replacement)</code>第一个参数为正则表达式，第二个参数为字符串。所以<code>|</code>需要使用转义<code>\\|</code></p>
-<p>参考<br><a href="http://www.infoq.com/cn/news/2011/01/regular-expressions-1" target="_blank" rel="external"><br>正则表达式（一）：纠结的转义</a><br><a href="http://www.cnblogs.com/iyangyuan/p/4809582.html" target="_blank" rel="external">你真的会用java replaceAll函数吗？</a><br><a href="http://www.cnblogs.com/yaochc/p/4574910.html" target="_blank" rel="external">Java转义符\|</a></p>
+</code></pre><p>注意上面三个方法，<br><code>replace(char oldChar, char newChar)</code> 与<code>replace(CharSequence target, CharSequence replacement)</code> 方法两个参数都是字符串，所以<code>|</code>不需要转义。<br><code>replaceFirst(String regex, String replacement)</code>与<code>replaceAll(String regex, String replacement)</code> 方法第一个参数为正则表达式，第二个参数为字符串。所以<code>|</code>需要使用转义<code>\\|</code></p>
+<p>参考<br><a href="http://www.infoq.com/cn/news/2011/01/regular-expressions-1" target="_blank" rel="external">正则表达式（一）：纠结的转义</a><br><a href="http://www.cnblogs.com/iyangyuan/p/4809582.html" target="_blank" rel="external">你真的会用java replaceAll函数吗？</a><br><a href="http://www.cnblogs.com/yaochc/p/4574910.html" target="_blank" rel="external">Java转义符\|</a></p>
 ]]></content>
       
         <categories>
