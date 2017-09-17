@@ -122,8 +122,7 @@
 </code></pre>
 <p>XmlBeanFactory继承了AbstractBeanFactory，<code>getBean</code>将调用AbstractBeanFactory.doGetBean方法。该方法是读取bean的实现。</p>
 <p>AbstractBeanFactory.doGetBean：</p>
-<pre><code class="java">protected &lt;T&gt; T doGetBean(
-        final String name, final Class&lt;T&gt; requiredType, final Object[] args, boolean typeCheckOnly) ... {
+<pre><code class="java">protected &lt;T&gt; T doGetBean(final String name, final Class&lt;T&gt; requiredType, final Object[] args, boolean typeCheckOnly) {
     final String beanName = transformedBeanName(name);    // 处理别名
 
     Object sharedInstance = getSingleton(beanName);        // 从单例缓存中获取
@@ -156,7 +155,7 @@
 }
 </code></pre>
 <p><code>getObjectForBeanInstance</code>方法会根据参数beanInstance进行处理，如果beanInstance是FactoryBean会创建bean，返回直接返回beanInstance。</p>
-<p>需要注意，这里调用了两个重载方法 <code>getSingleton(String beanName)</code>和<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>  </p>
+<p>需要注意，这里调用了重载方法 <code>getSingleton(String beanName)</code>和<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>  </p>
 <p>重载方法一<code>getSingleton(beanName)</code>从容器中获取单例bean。<br>DefaultSingletonBeanRegistry.getSingleton:</p>
 <pre><code class="java">    protected Object getSingleton(String beanName, boolean allowEarlyReference) {
         ...
@@ -169,7 +168,7 @@
     }
 </code></pre>
 <p>singletonObject用于缓存单例的bean<br>earlySingletonObjects则缓存正在创建的bean</p>
-<p>重载方法二<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>会通过ObjectFactory创建一个单例bean。<br>DefaultSingletonBeanRegistry.getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory):</p>
+<p>重载方法二<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>会通过ObjectFactory创建一个单例bean。<br>DefaultSingletonBeanRegistry.getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)才是真正创建bean</p>
 <pre><code>public Object getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory) {
     beforeSingletonCreation(beanName);    // 错误检查,子类可扩展
 
