@@ -118,54 +118,54 @@
 
 					<div class="article-content">
 						<p>在<a href="/java-spring-load-config/" title="spring加载配置-源码简析">spring加载配置-源码简析</a>中简单描述了spring加载配置文件的过程，现在再来分析一下spring获取bean的过程。<br><a id="more"></a></p>
-<pre><code class="java">    Blog bean = (Blog)xmlBeanFactory.getBean(&quot;blog&quot;);
+<pre class=" language-java"><code class="language-java">    Blog bean <span class="token operator" >=</span> <span class="token punctuation" >(</span>Blog<span class="token punctuation" >)</span>xmlBeanFactory<span class="token punctuation" >.</span><span class="token function" >getBean</span><span class="token punctuation" >(</span><span class="token string" >"blog"</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 </code></pre>
 <p>XmlBeanFactory继承了AbstractBeanFactory，<code>getBean</code>将调用AbstractBeanFactory.doGetBean方法。该方法是读取bean的实现。</p>
 <p>AbstractBeanFactory.doGetBean：</p>
-<pre><code class="java">protected &lt;T&gt; T doGetBean(final String name, final Class&lt;T&gt; requiredType, final Object[] args, boolean typeCheckOnly) {
-    final String beanName = transformedBeanName(name);    // 处理别名
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >protected</span> <span class="token operator" >&lt;</span>T<span class="token operator" >></span> T <span class="token function" >doGetBean</span><span class="token punctuation" >(</span><span class="token keyword" >final</span> String name<span class="token punctuation" >,</span> <span class="token keyword" >final</span> Class<span class="token operator" >&lt;</span>T<span class="token operator" >></span> requiredType<span class="token punctuation" >,</span> <span class="token keyword" >final</span> Object<span class="token punctuation" >[</span><span class="token punctuation" >]</span> args<span class="token punctuation" >,</span> <span class="token keyword" >boolean</span> typeCheckOnly<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    <span class="token keyword" >final</span> String beanName <span class="token operator" >=</span> <span class="token function" >transformedBeanName</span><span class="token punctuation" >(</span>name<span class="token punctuation" >)</span><span class="token punctuation" >;</span>    <span class="token comment" spellcheck="true">// 处理别名</span>
 
-    Object sharedInstance = getSingleton(beanName);        // 从单例缓存中获取
+    Object sharedInstance <span class="token operator" >=</span> <span class="token function" >getSingleton</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>        <span class="token comment" spellcheck="true">// 从单例缓存中获取</span>
 
-    // 父Factory
-    BeanFactory parentBeanFactory = getParentBeanFactory();
+    <span class="token comment" spellcheck="true">// 父Factory</span>
+    BeanFactory parentBeanFactory <span class="token operator" >=</span> <span class="token function" >getParentBeanFactory</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
-    // 配置文件
-    final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+    <span class="token comment" spellcheck="true">// 配置文件</span>
+    <span class="token keyword" >final</span> RootBeanDefinition mbd <span class="token operator" >=</span> <span class="token function" >getMergedLocalBeanDefinition</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
 
-    // 处理依赖
-    String[] dependsOn = mbd.getDependsOn();
+    <span class="token comment" spellcheck="true">// 处理依赖</span>
+    String<span class="token punctuation" >[</span><span class="token punctuation" >]</span> dependsOn <span class="token operator" >=</span> mbd<span class="token punctuation" >.</span><span class="token function" >getDependsOn</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
-    // bean范围为Singleton
-    if (mbd.isSingleton()) {
+    <span class="token comment" spellcheck="true">// bean范围为Singleton</span>
+    <span class="token keyword" >if</span> <span class="token punctuation" >(</span>mbd<span class="token punctuation" >.</span><span class="token function" >isSingleton</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
 
-        sharedInstance = getSingleton(beanName, new ObjectFactory&lt;Object&gt;() {
+        sharedInstance <span class="token operator" >=</span> <span class="token function" >getSingleton</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >,</span> <span class="token keyword" >new</span> <span class="token class-name" >ObjectFactory</span><span class="token operator" >&lt;</span>Object<span class="token operator" >></span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
 
-                    public Object getObject() throws BeansException {
-                        ...
-                        return createBean(beanName, mbd, args);        // 真正创建bean
+                    <span class="token keyword" >public</span> Object <span class="token function" >getObject</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token keyword" >throws</span> BeansException <span class="token punctuation" >{</span>
+                        <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+                        <span class="token keyword" >return</span> <span class="token function" >createBean</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >,</span> mbd<span class="token punctuation" >,</span> args<span class="token punctuation" >)</span><span class="token punctuation" >;</span>        <span class="token comment" spellcheck="true">// 真正创建bean</span>
 
-                    }
-                });
-                bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
-    } else if() {    // 其他处理
-        ...
-    }        
-}
+                    <span class="token punctuation" >}</span>
+                <span class="token punctuation" >}</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+                bean <span class="token operator" >=</span> <span class="token function" >getObjectForBeanInstance</span><span class="token punctuation" >(</span>sharedInstance<span class="token punctuation" >,</span> name<span class="token punctuation" >,</span> beanName<span class="token punctuation" >,</span> mbd<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span> <span class="token keyword" >else</span> <span class="token keyword" >if</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>    <span class="token comment" spellcheck="true">// 其他处理</span>
+        <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+    <span class="token punctuation" >}</span>        
+<span class="token punctuation" >}</span>
 </code></pre>
 <p><code>getObjectForBeanInstance</code>方法会根据参数beanInstance进行处理，如果beanInstance是FactoryBean会创建bean，返回直接返回beanInstance。</p>
 <p>需要注意，这里调用了重载方法 <code>getSingleton(String beanName)</code>和<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>  </p>
 <p>重载方法一<code>getSingleton(beanName)</code>从容器中获取单例bean。<br>DefaultSingletonBeanRegistry.getSingleton:</p>
-<pre><code class="java">    protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-        ...
-        Object singletonObject = this.singletonObjects.get(beanName);    
+<pre class=" language-java"><code class="language-java">    <span class="token keyword" >protected</span> Object <span class="token function" >getSingleton</span><span class="token punctuation" >(</span>String beanName<span class="token punctuation" >,</span> <span class="token keyword" >boolean</span> allowEarlyReference<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+        Object singletonObject <span class="token operator" >=</span> <span class="token keyword" >this</span><span class="token punctuation" >.</span>singletonObjects<span class="token punctuation" >.</span><span class="token function" >get</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>    
 
-                singletonObject = this.earlySingletonObjects.get(beanName);
+                singletonObject <span class="token operator" >=</span> <span class="token keyword" >this</span><span class="token punctuation" >.</span>earlySingletonObjects<span class="token punctuation" >.</span><span class="token function" >get</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
-        }
-        return (singletonObject != NULL_OBJECT ? singletonObject : null);
-    }
+        <span class="token punctuation" >}</span>
+        <span class="token keyword" >return</span> <span class="token punctuation" >(</span>singletonObject <span class="token operator" >!=</span> NULL_OBJECT <span class="token operator" >?</span> singletonObject <span class="token operator" >:</span> null<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span>
 </code></pre>
 <p>singletonObject用于缓存单例的bean<br>earlySingletonObjects则缓存正在创建的bean</p>
 <p>重载方法二<code>getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</code>会通过ObjectFactory创建一个单例bean。<br>DefaultSingletonBeanRegistry.getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)才是真正创建bean</p>
@@ -183,31 +183,31 @@
 
 }
 </code></pre><p>bean创建过程在<code>return createBean(beanName, mbd, args);</code>代码，<br><code>createBean</code>方法由AbstractAutowireCapableBeanFactory实现：</p>
-<pre><code class="java">protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) ... {
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >protected</span> Object <span class="token function" >createBean</span><span class="token punctuation" >(</span>String beanName<span class="token punctuation" >,</span> RootBeanDefinition mbd<span class="token punctuation" >,</span> Object<span class="token punctuation" >[</span><span class="token punctuation" >]</span> args<span class="token punctuation" >)</span> <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span> <span class="token punctuation" >{</span>
 
-    // 解析class
-    Class&lt;?&gt; resolvedClass = resolveBeanClass(mbd, beanName);
+    <span class="token comment" spellcheck="true">// 解析class</span>
+    Class<span class="token operator" >&lt;</span><span class="token operator" >?</span><span class="token operator" >></span> resolvedClass <span class="token operator" >=</span> <span class="token function" >resolveBeanClass</span><span class="token punctuation" >(</span>mbd<span class="token punctuation" >,</span> beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
-    // 注意，如果resolveBeforeInstantiation返回非null对象，这里将直接返回
-    Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
-    if (bean != null) {
-        return bean;
-    }
+    <span class="token comment" spellcheck="true">// 注意，如果resolveBeforeInstantiation返回非null对象，这里将直接返回</span>
+    Object bean <span class="token operator" >=</span> <span class="token function" >resolveBeforeInstantiation</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >,</span> mbdToUse<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token keyword" >if</span> <span class="token punctuation" >(</span>bean <span class="token operator" >!=</span> null<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token keyword" >return</span> bean<span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span>
 
-    // 创建bean
-    Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+    <span class="token comment" spellcheck="true">// 创建bean</span>
+    Object beanInstance <span class="token operator" >=</span> <span class="token function" >doCreateBean</span><span class="token punctuation" >(</span>beanName<span class="token punctuation" >,</span> mbdToUse<span class="token punctuation" >,</span> args<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
-    return beanInstance;
-}
+    <span class="token keyword" >return</span> beanInstance<span class="token punctuation" >;</span>
+<span class="token punctuation" >}</span>
 
-protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
-    bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
+<span class="token keyword" >protected</span> Object <span class="token function" >resolveBeforeInstantiation</span><span class="token punctuation" >(</span>String beanName<span class="token punctuation" >,</span> RootBeanDefinition mbd<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    bean <span class="token operator" >=</span> <span class="token function" >applyBeanPostProcessorsBeforeInstantiation</span><span class="token punctuation" >(</span>targetType<span class="token punctuation" >,</span> beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
 
-    if (bean != null) {
-        bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
-    }
+    <span class="token keyword" >if</span> <span class="token punctuation" >(</span>bean <span class="token operator" >!=</span> null<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        bean <span class="token operator" >=</span> <span class="token function" >applyBeanPostProcessorsAfterInitialization</span><span class="token punctuation" >(</span>bean<span class="token punctuation" >,</span> beanName<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span>
 
-}
+<span class="token punctuation" >}</span>
 </code></pre>
 <p><code>resolveBeforeInstantiation</code>会调用前置处理方法InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation,如果InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation返回非null对象,createBean将直接返回该对象,所以用户可以通过实现InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation自定义bean对象。</p>
 <p>AbstractAutowireCapableBeanFactory.doCreateBean:</p>
@@ -343,7 +343,7 @@ public static &lt;T&gt; T instantiateClass(Constructor&lt;T&gt; ctor, Object... 
     }            
 }
 </code></pre><p>属性的注入也是比较复杂的过程，这里不再展开了…</p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -355,23 +355,6 @@ public static &lt;T&gt; T instantiateClass(Constructor&lt;T&gt; ctor, Object... 
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-spring-get-bean.md" data-title="spring获取bean - 源码简析" data-url="https://binecy.coding.me/java-spring-get-bean/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -411,6 +394,6 @@ public static &lt;T&gt; T instantiateClass(Constructor&lt;T&gt; ctor, Object... 
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

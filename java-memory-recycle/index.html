@@ -121,9 +121,9 @@
 <p>程序计数器, 虚拟机栈, 本地方法栈随线程而生, 随线程而灭, 不需要过多考虑回收.</p>
 <p>垃圾回收主要关注Java堆和方法区.</p>
 <h2 id="判断对象是否可用的算法"><a href="#判断对象是否可用的算法" class="headerlink" title="判断对象是否可用的算法"></a>判断对象是否可用的算法</h2><h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>给对象中添加一个引用计数器, 每当有一个地方引用它时, 计数器就加1; 当引用失效时, 计数器就减1; 任何时刻计数器为0的对象就是不可能再被使用.<br>主流java虚拟机都没有选用计数算法管理内存, 因为它很难解决对象之间相互循环引用的问题.<br>循环引用</p>
-<pre><code class="java">        Instance ojeA,ojeB;
-        ojeA.instance = objB;
-        ojeB.instance = objA;
+<pre class=" language-java"><code class="language-java">        Instance ojeA<span class="token punctuation" >,</span>ojeB<span class="token punctuation" >;</span>
+        ojeA<span class="token punctuation" >.</span>instance <span class="token operator" >=</span> objB<span class="token punctuation" >;</span>
+        ojeB<span class="token punctuation" >.</span>instance <span class="token operator" >=</span> objA<span class="token punctuation" >;</span>
 </code></pre>
 <p>上述代码中ojeA与ojeB都有引用指定对方，但它们再无其他任何引用, 实际上这两个对象已经不可能再被访问, 但是它们因为互相引用对方, 导致它们的引用计数都不为0, 于是引用计数算法无法通知GC收集器回收它们。</p>
 <h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>以一系列”GC Roots”对象作为起始点, 开始向下搜索, 搜索所走过的路径称为引用链.当GC Roots到一个对象没有引用链时, 证明此对象不可用.</p>
@@ -168,7 +168,7 @@
 </ol>
 <h3 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h3><p>G1收集器可以作用于年轻区和年老区。</p>
 <p>G1收集器比较复杂，可参考<a href="http://tech.meituan.com/g1.html" target="_blank" rel="external">Java Hotspot G1 GC的一些关键技术</a></p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -180,23 +180,6 @@
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-memory-recycle.md" data-title="java内存回收" data-url="https://binecy.coding.me/java-memory-recycle/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -240,6 +223,6 @@
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

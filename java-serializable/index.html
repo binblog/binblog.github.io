@@ -258,7 +258,7 @@ private void defaultWriteFields(Object obj, ObjectStreamClass desc) {
 }
 </code></pre><p>需要注意的,<code>writeSerialData()</code>中,会通过<code>slotDesc.hasWriteObjectMethod()</code>检查被序列化的对象是否实现了签名为<code>private void writeObject(ObjectOutputStream out)</code>的方法， 如果有该方法，将直接调用该方法。该方法可以提供给用户自定义字段内容的存储格式，如密码的加密存储。</p>
 <p>同样，ObjectInputStream.readObject时，也会检查反序列化对象是否实现了签名为<code>private void readObject(ObjectInputStream in)</code>的方法，如果有该方法， 将直接该方法反序列化。该方法可实现反序列化时单例的需求。</p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -270,23 +270,6 @@ private void defaultWriteFields(Object obj, ObjectStreamClass desc) {
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-serializable.md" data-title="java序列化过程简析" data-url="https://binecy.coding.me/java-serializable/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -330,6 +313,6 @@ private void defaultWriteFields(Object obj, ObjectStreamClass desc) {
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

@@ -154,17 +154,17 @@ public class JavaVMStackSOF {
 <p>本地方法无法设定（-Xoss无效）</p>
 <h2 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h2><p>用于存放对象实例，所有线程共享<br>所有对象实例和数组都要在堆上分配.(栈上分配, 标量替换等优化技术除外)<br>可以处于物理上不连续的内存空间, 只要逻辑上是连续的即可.</p>
 <p>-Xms128m JVM初始分配的堆内存<br>-Xmx512m JVM最大允许分配的堆内存，可按需扩展  </p>
-<pre><code class="java">/**
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
  * VM Args : -Xms10m -Xmx10m -XX:+HeapDumpOnOutOfMemoryError
- */
-public class HeapOOM {
-    public static void main(String[] args) {
-        List&lt;Object&gt; list = new ArrayList&lt;Object&gt;();
-        while(true) {
-            list.add(new Object());
-        }
-    }
-}
+ */</span>
+<span class="token keyword" >public</span> <span class="token keyword" >class</span> <span class="token class-name" >HeapOOM</span> <span class="token punctuation" >{</span>
+    <span class="token keyword" >public</span> <span class="token keyword" >static</span> <span class="token keyword" >void</span> <span class="token function" >main</span><span class="token punctuation" >(</span>String<span class="token punctuation" >[</span><span class="token punctuation" >]</span> args<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        List<span class="token operator" >&lt;</span>Object<span class="token operator" >></span> list <span class="token operator" >=</span> <span class="token keyword" >new</span> <span class="token class-name" >ArrayList</span><span class="token operator" >&lt;</span>Object<span class="token operator" >></span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+        <span class="token keyword" >while</span><span class="token punctuation" >(</span><span class="token boolean" >true</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+            list<span class="token punctuation" >.</span><span class="token function" >add</span><span class="token punctuation" >(</span><span class="token keyword" >new</span> <span class="token class-name" >Object</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+        <span class="token punctuation" >}</span>
+    <span class="token punctuation" >}</span>
+<span class="token punctuation" >}</span>
 </code></pre>
 <p><code>list</code>不断存入创建的Object对象，导致Java堆内存不足，抛出<code>java.lang.OutOfMemoryError: Java heap space</code>异常。</p>
 <h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>方法区用于存储已被虚拟机加载的类信息，常量，静态变量，即时编译器编译后的代码等数据。<br>运行时常量池是方法区的一部分，用于存储编译期生成的各种字面量和符号引用。</p>
@@ -204,7 +204,7 @@ Process finished with exit code 1
 <p>参考：<br><a href="https://book.douban.com/subject/24722612/" target="_blank" rel="external">深入理解Java虚拟机（第2版）</a>  </p>
 <p><a href="http://www.cnblogs.com/paddix/p/5309550.html" target="_blank" rel="external">Java8内存模型—永久代(PermGen)和元空间(Metaspace)</a></p>
 <p><a href="http://droidyue.com/blog/2015/08/22/where-has-the-java-permgen-gone/index.html" target="_blank" rel="external">Java永久代去哪儿了</a></p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -216,23 +216,6 @@ Process finished with exit code 1
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-memory.md" data-title="java运行时内存概述" data-url="https://binecy.coding.me/java-memory/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -276,6 +259,6 @@ Process finished with exit code 1
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

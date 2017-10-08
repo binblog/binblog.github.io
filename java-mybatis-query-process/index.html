@@ -302,7 +302,7 @@ private &lt;E&gt; List&lt;E&gt; queryFromDatabase(MappedStatement ms, Object par
 }
 </code></pre><p>resultSetHandler负责对结果进行处理。</p>
 <p>上述只是简单记录了mybatis的sql查询的执行流程，并没有对核心的实现进行详细分析，如<br><strong>MappedStatement.getBoundSql</strong>解析sql语句<br><strong>ParameterHandler.setParameters</strong>处理查询参数<br><strong>resultSetHandler.handleResultSets</strong>处理查询结果<br><strong>连接管理</strong><br><strong>事务管理</strong><br><strong>缓存实现</strong></p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -314,23 +314,6 @@ private &lt;E&gt; List&lt;E&gt; queryFromDatabase(MappedStatement ms, Object par
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-mybatis-query-process.md" data-title="mybatis查询过程源码简析" data-url="https://binecy.coding.me/java-mybatis-query-process/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -374,6 +357,6 @@ private &lt;E&gt; List&lt;E&gt; queryFromDatabase(MappedStatement ms, Object par
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

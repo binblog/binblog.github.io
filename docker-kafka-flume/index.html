@@ -206,7 +206,7 @@ a1.sinks.k1.channel = c1
 <pre><code># echo &quot;hello&quot; &gt;&gt; 1.log
 </code></pre><p>进入kafka容器，使用<code>bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic flume --from-beginning</code>可以查看到已经接收到hello字符串了。</p>
 <p>本想加上elasticsearch，kibana的，但aws已经跑不起来，所以暂且这样了。</p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -218,23 +218,6 @@ a1.sinks.k1.channel = c1
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/docker-kafka-flume.md" data-title="docker上整合kafka和flume" data-url="https://binecy.coding.me/docker-kafka-flume/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -274,6 +257,6 @@ a1.sinks.k1.channel = c1
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

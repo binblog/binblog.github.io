@@ -421,7 +421,7 @@ public class Handler implements Runnable {
 }
 </code></pre><p>上述代码仍然存在问题，每个IO事件处理都创建了一个线程，线程的创建和销毁都极耗费cpu，所以这里应用使用线程池。<br>更多Reactor模式请参考Doug Lea的<a href="http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf" target="_blank" rel="external">《Scalable IO in Java》</a></p>
 <p>参考：<br><a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="external">Linux IO模式及 select、poll、epoll详解</a><br><a href="http://tech.meituan.com/nio.html" target="_blank" rel="external">Java NIO浅析</a><br><a href="http://www.codeceo.com/article/java-nio-nodejs.html" target="_blank" rel="external">支撑 Java NIO 与 NodeJS 的底层技术</a><br><a href="http://www.importnew.com/20188.html" target="_blank" rel="external">【Java TCP/IP Socket】基于NIO的TCP通信（含代码）</a></p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -433,23 +433,6 @@ public class Handler implements Runnable {
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-nio.md" data-title="java nio知识整理" data-url="https://binecy.coding.me/java-nio/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -493,6 +476,6 @@ public class Handler implements Runnable {
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

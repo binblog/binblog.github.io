@@ -125,9 +125,9 @@
 <p>由于泛型在运行时被擦除，<strong>在类文字（class literal）中必须使用原生态类型</strong> 规范不允许使用参数化类型（但允许数组类型和基本类型），即List.class，String[].class和int.class是合法的，但List<string>.class和List&lt;?&gt;.class不合法。  </string></p>
 <p>在参数化类型而非无限制通配符上使用instanceof操作符是非法的。<code>set instanceof Set&lt;?&gt;</code>是合法的，但与<code>set instanceof Set</code>无任何区别。</p>
 <p>对泛型使用instanceof操作首选方案：</p>
-<pre><code class="java">if(set instanceof Set) {
-    Set&lt;?&gt; m = (Set&lt;?&gt;)set;
-}
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >if</span><span class="token punctuation" >(</span>set <span class="token keyword" >instanceof</span> <span class="token class-name" >Set</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    Set<span class="token operator" >&lt;</span><span class="token operator" >?</span><span class="token operator" >></span> m <span class="token operator" >=</span> <span class="token punctuation" >(</span>Set<span class="token operator" >&lt;</span><span class="token operator" >?</span><span class="token operator" >></span><span class="token punctuation" >)</span>set<span class="token punctuation" >;</span>
+<span class="token punctuation" >}</span>
 </code></pre>
 <p>注意此处将set转换为通配符类型Set&lt;?&gt;，而不是原生类型Set</p>
 <h2 id="消除非受检警告"><a href="#消除非受检警告" class="headerlink" title="消除非受检警告"></a>消除非受检警告</h2><p><strong>尽可能消除每一个非受检警告</strong><br>如果无法消除警告，而且可以证明引起警告的代码是类型安全的（只在在这种情况下），可以用一个@SuppressWarnings(“unchecked”)<br><strong>应该始终在尽可能小的范围中使用SuppressWarnings注解。永远不要在整个类上使用SuppressWarnings，这么做会掩盖重要的警告</strong>  </p>
@@ -141,67 +141,67 @@ objects[1] = ints;
 String s = strings[0].get(0);   //抛出异常ClassCastException
 </code></pre><p>如果创建泛型数组出错，最好的解决方案是优先使用集合类型List<e>，而不是数组类型E[]。</e></p>
 <h2 id="优先使用泛型"><a href="#优先使用泛型" class="headerlink" title="优先使用泛型"></a>优先使用泛型</h2><p>设计新类型时，如果客户需要（与Object）进行类型转换才能使用，则可以考虑使用泛型。<br>如</p>
-<pre><code class="java">public class Stack {
-    Object[] elements;  // 对象存储数组
-    public Object pop() {
-        ...
-    }
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >public</span> <span class="token keyword" >class</span> <span class="token class-name" >Stack</span> <span class="token punctuation" >{</span>
+    Object<span class="token punctuation" >[</span><span class="token punctuation" >]</span> elements<span class="token punctuation" >;</span>  <span class="token comment" spellcheck="true">// 对象存储数组</span>
+    <span class="token keyword" >public</span> Object <span class="token function" >pop</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+    <span class="token punctuation" >}</span>
 
-    public void push(Object e) {
-        ..
-    }
-    ... 
-}
+    <span class="token keyword" >public</span> <span class="token keyword" >void</span> <span class="token function" >push</span><span class="token punctuation" >(</span>Object e<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+    <span class="token punctuation" >}</span>
+    <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span> 
+<span class="token punctuation" >}</span>
 </code></pre>
 <p>可以使用泛型</p>
-<pre><code class="java">public class Stack&lt;E&gt; {
-    E[] elements;  // 对象存储数组
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >public</span> <span class="token keyword" >class</span> <span class="token class-name" >Stack</span><span class="token operator" >&lt;</span>E<span class="token operator" >></span> <span class="token punctuation" >{</span>
+    E<span class="token punctuation" >[</span><span class="token punctuation" >]</span> elements<span class="token punctuation" >;</span>  <span class="token comment" spellcheck="true">// 对象存储数组</span>
 
-    @SuppressWarnings(&quot;unchecked&quot;)
-    public Stack() {
-        elements = (E())new Object[default_initial_capacity];   // !   
-    }
+    <span class="token annotation punctuation" >@SuppressWarnings</span><span class="token punctuation" >(</span><span class="token string" >"unchecked"</span><span class="token punctuation" >)</span>
+    <span class="token keyword" >public</span> <span class="token function" >Stack</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        elements <span class="token operator" >=</span> <span class="token punctuation" >(</span><span class="token function" >E</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >)</span><span class="token keyword" >new</span> <span class="token class-name" >Object</span><span class="token punctuation" >[</span>default_initial_capacity<span class="token punctuation" >]</span><span class="token punctuation" >;</span>   <span class="token comment" spellcheck="true">// !   </span>
+    <span class="token punctuation" >}</span>
 
-    public E pop() {
-        ...
-    }
+    <span class="token keyword" >public</span> E <span class="token function" >pop</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+    <span class="token punctuation" >}</span>
 
-    public void push(E e) {
-        ..
-    }
-    ... 
-}
+    <span class="token keyword" >public</span> <span class="token keyword" >void</span> <span class="token function" >push</span><span class="token punctuation" >(</span>E e<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+    <span class="token punctuation" >}</span>
+    <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span> 
+<span class="token punctuation" >}</span>
 </code></pre>
 <p>注意上述代码中 <code>elements = (E())new Object[default_initial_capacity];</code> 语句中将Object数组转化为泛型数组，在无法使用列表的情况下，可以使用这种方法创建泛型数组。但相关的数组必须保存在一个私有的域中，永远不要返回给客户或传给任何方法，必须该数组不会存储类型错误的对象。</p>
 <p>这个问题可以使用第二种方法，将elements域的类型改用Object[]，pop方法使用</p>
-<pre><code class="java">public E pop() {
-    @SuppressWarnings(&quot;unchecked&quot;)
-    E result = (E)elements[--size];
-    ...
-}
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >public</span> E <span class="token function" >pop</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    <span class="token annotation punctuation" >@SuppressWarnings</span><span class="token punctuation" >(</span><span class="token string" >"unchecked"</span><span class="token punctuation" >)</span>
+    E result <span class="token operator" >=</span> <span class="token punctuation" >(</span>E<span class="token punctuation" >)</span>elements<span class="token punctuation" >[</span><span class="token operator" >--</span>size<span class="token punctuation" >]</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >.</span><span class="token punctuation" >.</span><span class="token punctuation" >.</span>
+<span class="token punctuation" >}</span>
 </code></pre>
 <p>数组类型的未受检转换比变量的未受检转换更危险，建议使用第二种方法。但如果需要从数组多处读取元素，第二种方法又需要多次转换，所以第一种更常用。</p>
 <h2 id="优先考虑泛型方法"><a href="#优先考虑泛型方法" class="headerlink" title="优先考虑泛型方法"></a>优先考虑泛型方法</h2><p>与类型一样，为了确保新方法不用转换就可以使用，可以优先考虑泛型方法</p>
 <h2 id="利用有限制通配符提升api的灵活性"><a href="#利用有限制通配符提升api的灵活性" class="headerlink" title="利用有限制通配符提升api的灵活性"></a>利用有限制通配符提升api的灵活性</h2><p>上述的Stack类中增加一个方法，将Iterable中所有的元素都加入到Stack中：</p>
-<pre><code class="java">public void pushAll(Iterable&lt;E&gt; src) {
-    for(E e: src) {
-        push(e);
-    }
-}
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >public</span> <span class="token keyword" >void</span> <span class="token function" >pushAll</span><span class="token punctuation" >(</span>Iterable<span class="token operator" >&lt;</span>E<span class="token operator" >></span> src<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    <span class="token keyword" >for</span><span class="token punctuation" >(</span>E e<span class="token operator" >:</span> src<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token function" >push</span><span class="token punctuation" >(</span>e<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span>
+<span class="token punctuation" >}</span>
 </code></pre>
 <p>但这个方法无法将Iterable<integer>加入到Stack<number>中，所以需要使用<em>有限制的通配符类型</em>，修改pushAll方法为</number></integer></p>
-<pre><code class="java">public void pushAll(Iterable&lt;? extends E&gt; src) {
-    for(E e: src) {
-        push(e);
-    }
-}
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >public</span> <span class="token keyword" >void</span> <span class="token function" >pushAll</span><span class="token punctuation" >(</span>Iterable<span class="token operator" >&lt;</span><span class="token operator" >?</span> <span class="token keyword" >extends</span> <span class="token class-name" >E</span><span class="token operator" >></span> src<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    <span class="token keyword" >for</span><span class="token punctuation" >(</span>E e<span class="token operator" >:</span> src<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        <span class="token function" >push</span><span class="token punctuation" >(</span>e<span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span>
+<span class="token punctuation" >}</span>
 </code></pre>
 <p><code>Iterable&lt;？ extends E&gt; src</code>表示<em>类型为E的某种子类的Iterable</em>。<br>Stack类同样提供弹出所有元素到指定集合的方法：</p>
-<pre><code class="java">public void popAll(Collection&lt;? super E&gt; dst) {
-    while(!isEmpty()) {
-        dst.add(pop());
-    }
-}
+<pre class=" language-java"><code class="language-java"><span class="token keyword" >public</span> <span class="token keyword" >void</span> <span class="token function" >popAll</span><span class="token punctuation" >(</span>Collection<span class="token operator" >&lt;</span><span class="token operator" >?</span> <span class="token keyword" >super</span> E<span class="token operator" >></span> dst<span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+    <span class="token keyword" >while</span><span class="token punctuation" >(</span><span class="token operator" >!</span><span class="token function" >isEmpty</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >)</span> <span class="token punctuation" >{</span>
+        dst<span class="token punctuation" >.</span><span class="token function" >add</span><span class="token punctuation" >(</span><span class="token function" >pop</span><span class="token punctuation" >(</span><span class="token punctuation" >)</span><span class="token punctuation" >)</span><span class="token punctuation" >;</span>
+    <span class="token punctuation" >}</span>
+<span class="token punctuation" >}</span>
 </code></pre>
 <p>Collection&lt;? super E&gt; dst表示<em>类型为E的某种超类的集合</em>  </p>
 <p>为了获得最大限度的灵活性，要在表示生产者或消费者的输入参数上使用通配符类型。如果某个输入参数即是生产者，又是消费者，则应该使用严格的类型匹配。<br><strong>PECS表示producter-extends,consumer-super</strong><br>对于参数类型T的提供类，使用&lt;? extends T&gt;。如pushAll方法中的src参数产生E实例供Stack使用，所以src参数为提供都，类型为Iterable&lt;? extends E&gt;<br>对于参数类型T的消费者，使用&lt;? super E&gt;。如popAll的dst参数通过Stack消费E实例，所以dst参数为消费者，类型为Collection&lt;? super E&gt; dst。</p>
@@ -231,7 +231,7 @@ System.out.println(max(list));
 <pre><code>public static &lt;T extends Comparable&lt;? super T&gt;&gt; T max(List&lt;? extends T&gt; list) { ... }
 </code></pre><p>现在可以看到List<scheduledfuture> 可以作为max的传入参数了  </scheduledfuture></p>
 <p>Comparable始终都是消费者，使用Comparable&lt;? super T&gt;优先于Comparable<t>,Comparator也是一样。</t></p>
-<h2 id="优先使用类型安全的异构容器"><a href="#优先使用类型安全的异构容器" class="headerlink" title="优先使用类型安全的异构容器"></a>优先使用类型安全的异构容器</h2>
+<h2 id="优先使用类型安全的异构容器"><a href="#优先使用类型安全的异构容器" class="headerlink" title="优先使用类型安全的异构容器"></a>优先使用类型安全的异构容器</h2><link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -243,23 +243,6 @@ System.out.println(max(list));
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/effective-java-generic.md" data-title="effective java 泛型" data-url="https://binecy.coding.me/effective-java-generic/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -303,6 +286,6 @@ System.out.println(max(list));
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>

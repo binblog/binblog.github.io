@@ -183,7 +183,7 @@ t.replaceAll(&quot;\\|&quot;, &quot;,&quot;);   // 123,456,789
 t.replaceFirst(&quot;\\|&quot;, &quot;,&quot;); // 123,456|789
 </code></pre><p>注意上面三个方法，<br><code>replace(char oldChar, char newChar)</code> 与<code>replace(CharSequence target, CharSequence replacement)</code> 方法两个参数都是字符串，所以<code>|</code>不需要转义。<br><code>replaceFirst(String regex, String replacement)</code>与<code>replaceAll(String regex, String replacement)</code> 方法第一个参数为正则表达式，第二个参数为字符串。所以<code>|</code>需要使用转义<code>\\|</code></p>
 <p>参考<br><a href="http://www.infoq.com/cn/news/2011/01/regular-expressions-1" target="_blank" rel="external">正则表达式（一）：纠结的转义</a><br><a href="http://www.cnblogs.com/iyangyuan/p/4809582.html" target="_blank" rel="external">你真的会用java replaceAll函数吗？</a><br><a href="http://www.cnblogs.com/yaochc/p/4574910.html" target="_blank" rel="external">Java转义符\|</a></p>
-
+<link href="/css/prism-tomorrow.css" rel="stylesheet">
 					</div>
 					
 			  <!-- about -->
@@ -195,23 +195,6 @@ t.replaceFirst(&quot;\\|&quot;, &quot;,&quot;); // 123,456|789
 
 		<div class="comment-section">
   
-  
-   <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="_posts/java-escape-character.md" data-title="java转义字符" data-url="https://binecy.coding.me/java-escape-character/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'tanke773'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
   
 
 
@@ -251,6 +234,6 @@ t.replaceFirst(&quot;\\|&quot;, &quot;,&quot;); // 123,456|789
 		<script src="/libs/tocify/jquery.tocify.custom.js"></script>
 
 		<script src="/js/main.js"></script>
-
+		
 	</body>
 </html>
